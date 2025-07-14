@@ -1,0 +1,789 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Package, Users, Calculator, TrendingUp, FileText, Building, ShoppingCart, 
+  BarChart3, Search, Plus, ChevronRight, Mail, Phone, Calendar, PoundSterling,
+  Home, Bath, Lightbulb, Wrench, CheckCircle, AlertCircle, Download, Upload,
+  Globe, Truck, Clock, Star, Filter, Send, Eye, Copy, X, Check, RefreshCw,
+  Database, Settings, ArrowUp, ArrowDown, Zap, Target, DollarSign
+} from 'lucide-react';
+
+const HouseOfClarenceOS = () => {
+  // Real product data from spreadsheet
+  const [products] = useState([
+    // KITCHEN
+    { id: 'KWO001', category: 'KITCHEN', subCategory: 'Worktop', type: 'Sintered Stone Worktop', specs: 'Premium 20mm Calacatta', hocPrice: 2850, ukPrice: 4500, link: 'https://lussostone.com/sintered', leadTime: 4, moq: 1, supplier: 'Lusso Stone' },
+    { id: 'KOC001', category: 'KITCHEN', subCategory: 'Overhead cabinets', type: 'German Kitchen Cabinets', specs: 'Häcker Systemat Range', hocPrice: 3200, ukPrice: 5100, leadTime: 6, moq: 1, supplier: 'Häcker' },
+    { id: 'KOU001', category: 'KITCHEN', subCategory: 'Other Units', type: 'Island Unit', specs: '2400x1200mm with storage', hocPrice: 4800, ukPrice: 7500, leadTime: 8, moq: 1, supplier: 'Häcker' },
+    
+    // BATHROOMS
+    { id: 'BBA001', category: 'BATHROOMS', subCategory: 'Family Bathroom', type: 'Basin+Vanity Unit', specs: 'Wooden Vanity Unit 1500mm', hocPrice: 980, ukPrice: 1580, link: 'https://lussostone.com/products/tiffany-velvet-beige', leadTime: 3, moq: 1, supplier: 'Lusso Stone' },
+    { id: 'BBA002', category: 'BATHROOMS', subCategory: 'Family Bathroom', type: 'Basin Faucet', specs: 'Regal Brushed SS Crosshead 3-Hole', hocPrice: 134, ukPrice: 214.17, link: 'https://lussostone.com/products/regal-brushed', leadTime: 2, moq: 2, supplier: 'Lusso Stone' },
+    { id: 'BWC001', category: 'BATHROOMS', subCategory: 'Family Bathroom', type: 'WC', specs: 'Rimless Back to Wall WC Pan', hocPrice: 285, ukPrice: 425, leadTime: 2, moq: 1, supplier: 'Lusso Stone' },
+    { id: 'BSH001', category: 'BATHROOMS', subCategory: 'Family Bathroom', type: 'Shower', specs: 'Walk-in Shower Screen 1200mm', hocPrice: 450, ukPrice: 780, leadTime: 3, moq: 1, supplier: 'Lusso Stone' },
+    { id: 'BBA003', category: 'BATHROOMS', subCategory: 'Master Ensuite', type: 'Bath', specs: 'Freestanding Stone Bath 1700mm', hocPrice: 1850, ukPrice: 2950, leadTime: 4, moq: 1, supplier: 'Lusso Stone' },
+    
+    // FLOORING
+    { id: 'FWO001', category: 'FLOORING', subCategory: 'Living Areas', type: 'Engineered Wood', specs: 'Oak 15mm x 220mm', hocPrice: 48, ukPrice: 75, unit: 'per m²', leadTime: 2, moq: 50, supplier: 'Kährs' },
+    { id: 'FTI001', category: 'FLOORING', subCategory: 'Bathrooms', type: 'Porcelain Tiles', specs: 'Large Format 600x1200mm', hocPrice: 38, ukPrice: 62, unit: 'per m²', leadTime: 3, moq: 30, supplier: 'Porcelanosa' },
+    
+    // LIGHTING & ELECTRICAL
+    { id: 'LCH001', category: 'LIGHTING & ELECTRICAL', subCategory: 'Reception', type: 'Chandelier', specs: 'Crystal 800mm diameter', hocPrice: 2800, ukPrice: 4500, leadTime: 6, moq: 1, supplier: 'Schonbek' },
+    { id: 'LSM001', category: 'LIGHTING & ELECTRICAL', subCategory: 'Whole House', type: 'Smart Home System', specs: 'Control4 Complete Package', hocPrice: 8500, ukPrice: 14000, leadTime: 4, moq: 1, supplier: 'Control4' },
+    { id: 'LSP001', category: 'LIGHTING & ELECTRICAL', subCategory: 'General', type: 'LED Spotlights', specs: 'Adjustable GU10 Fire Rated', hocPrice: 18, ukPrice: 32, leadTime: 1, moq: 20, supplier: 'JCC' }
+  ]);
+
+  // Advanced state management
+  const [contractors, setContractors] = useState([
+    { 
+      id: 1, 
+      name: 'The Market Design & Build',
+      type: 'Design & Build',
+      contact: 'James Mitchell',
+      email: 'james@marketdb.co.uk',
+      phone: '020 7123 4567',
+      address: 'Chelsea, London',
+      projectsActive: 3,
+      projectsCompleted: 12,
+      totalRevenue: 342000,
+      avgProjectValue: 1850000,
+      paymentTerms: 'Net 30',
+      discountTier: 'Gold',
+      status: 'active',
+      notes: 'RIBA chartered, focuses on £250k-£3M projects',
+      creditLimit: 500000,
+      outstandingBalance: 48500
+    },
+    { 
+      id: 2, 
+      name: 'Prime London Developments',
+      type: 'Developer',
+      contact: 'Sarah Chen',
+      email: 'sarah@primeld.com',
+      phone: '020 7891 2345',
+      address: 'Mayfair, London',
+      projectsActive: 2,
+      projectsCompleted: 8,
+      totalRevenue: 218000,
+      avgProjectValue: 2400000,
+      paymentTerms: 'Net 45',
+      discountTier: 'Silver',
+      status: 'active',
+      creditLimit: 750000,
+      outstandingBalance: 0
+    }
+  ]);
+
+  const [quotes, setQuotes] = useState([
+    {
+      id: 'Q2024-001',
+      projectName: '13 Kewferry Drive',
+      contractor: contractors[0],
+      createdDate: '2024-11-15',
+      expiryDate: '2024-12-15',
+      status: 'sent',
+      items: [
+        { product: products[0], quantity: 8, customPrice: null },
+        { product: products[3], quantity: 3, customPrice: null },
+        { product: products[5], quantity: 3, customPrice: null }
+      ],
+      notes: 'Premium finishes for master bathroom renovation',
+      discount: 5,
+      accepted: false
+    }
+  ]);
+
+  const [orders, setOrders] = useState([]);
+  const [suppliers, setSuppliers] = useState([
+    { name: 'Lusso Stone', leadTime: 3, reliability: 95, paymentTerms: 'Net 60' },
+    { name: 'Häcker', leadTime: 6, reliability: 98, paymentTerms: 'Net 45' },
+    { name: 'Control4', leadTime: 4, reliability: 92, paymentTerms: 'Net 30' }
+  ]);
+
+  // UI State
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterCategory, setFilterCategory] = useState('ALL');
+  const [showQuoteBuilder, setShowQuoteBuilder] = useState(false);
+  const [currentQuote, setCurrentQuote] = useState({
+    contractor: null,
+    projectName: '',
+    items: [],
+    discount: 0,
+    notes: '',
+    expiryDays: 30
+  });
+
+  // Intelligent Features
+  const [priceAlerts, setPriceAlerts] = useState([]);
+  const [lowStockAlerts, setLowStockAlerts] = useState([]);
+  const [contractorInsights, setContractorInsights] = useState({});
+
+  // Advanced calculations
+  const calculateQuoteTotals = (quote) => {
+    const subtotal = quote.items.reduce((sum, item) => {
+      const price = item.customPrice || item.product.hocPrice;
+      return sum + (price * item.quantity);
+    }, 0);
+    
+    const ukTotal = quote.items.reduce((sum, item) => {
+      return sum + (item.product.ukPrice * item.quantity);
+    }, 0);
+    
+    const discountAmount = subtotal * (quote.discount / 100);
+    const total = subtotal - discountAmount;
+    const savings = ukTotal - total;
+    const savingsPercent = (savings / ukTotal) * 100;
+
+    return { subtotal, ukTotal, discountAmount, total, savings, savingsPercent };
+  };
+
+  const generateContractorInsights = () => {
+    const insights = {};
+    contractors.forEach(contractor => {
+      const contractorQuotes = quotes.filter(q => q.contractor.id === contractor.id);
+      const acceptedQuotes = contractorQuotes.filter(q => q.accepted);
+      const acceptanceRate = contractorQuotes.length > 0 
+        ? (acceptedQuotes.length / contractorQuotes.length * 100) 
+        : 0;
+      
+      insights[contractor.id] = {
+        totalQuotes: contractorQuotes.length,
+        acceptanceRate,
+        avgOrderValue: contractor.totalRevenue / (contractor.projectsCompleted || 1),
+        preferredCategories: ['BATHROOMS', 'KITCHEN'], // Would analyze from orders
+        seasonality: 'Q4 Peak', // Would calculate from historical data
+        riskScore: contractor.outstandingBalance > contractor.creditLimit * 0.8 ? 'High' : 'Low'
+      };
+    });
+    return insights;
+  };
+
+  useEffect(() => {
+    setContractorInsights(generateContractorInsights());
+  }, [contractors, quotes]);
+
+  // Smart product recommendations
+  const getComplementaryProducts = (productId) => {
+    const product = products.find(p => p.id === productId);
+    if (!product) return [];
+    
+    // Logic to suggest complementary products
+    if (product.category === 'BATHROOMS' && product.type === 'Basin+Vanity Unit') {
+      return products.filter(p => 
+        p.category === 'BATHROOMS' && 
+        (p.type === 'Basin Faucet' || p.type === 'Mirror')
+      );
+    }
+    return [];
+  };
+
+  // Render functions
+  const renderDashboard = () => {
+    const totalRevenue = contractors.reduce((sum, c) => sum + c.totalRevenue, 0);
+    const activeProjects = contractors.reduce((sum, c) => sum + c.projectsActive, 0);
+    const avgMargin = products.reduce((sum, p) => sum + ((p.ukPrice - p.hocPrice) / p.ukPrice * 100), 0) / products.length;
+    const pendingQuotes = quotes.filter(q => q.status === 'sent').length;
+
+    return (
+      <div className="space-y-6">
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-blue-50 rounded-lg">
+                <PoundSterling className="w-6 h-6 text-blue-600" />
+              </div>
+              <span className="text-sm font-medium text-green-600 flex items-center">
+                <ArrowUp className="w-4 h-4 mr-1" />
+                23%
+              </span>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900">£{(totalRevenue / 1000).toFixed(0)}k</h3>
+            <p className="text-sm text-gray-600 mt-1">YTD Revenue</p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-green-50 rounded-lg">
+                <Target className="w-6 h-6 text-green-600" />
+              </div>
+              <span className="text-sm font-medium text-gray-600">{avgMargin.toFixed(1)}%</span>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900">{activeProjects}</h3>
+            <p className="text-sm text-gray-600 mt-1">Active Projects</p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-purple-50 rounded-lg">
+                <Users className="w-6 h-6 text-purple-600" />
+              </div>
+              <span className="text-sm font-medium text-gray-600">85% active</span>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900">{contractors.length}</h3>
+            <p className="text-sm text-gray-600 mt-1">Contractors</p>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-orange-50 rounded-lg">
+                <FileText className="w-6 h-6 text-orange-600" />
+              </div>
+              <span className="text-sm font-medium text-orange-600">{pendingQuotes} pending</span>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900">{quotes.length}</h3>
+            <p className="text-sm text-gray-600 mt-1">Total Quotes</p>
+          </div>
+        </div>
+
+        {/* Insights Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Top Performing Products */}
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
+              Top Products
+              <Zap className="w-5 h-5 text-yellow-500" />
+            </h3>
+            <div className="space-y-3">
+              {products.slice(0, 5).map((product, idx) => (
+                <div key={product.id} className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-medium text-gray-500">#{idx + 1}</span>
+                    <div>
+                      <p className="font-medium text-sm">{product.specs}</p>
+                      <p className="text-xs text-gray-500">{product.category}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-sm">£{product.hocPrice}</p>
+                    <p className="text-xs text-green-600">{((product.ukPrice - product.hocPrice) / product.ukPrice * 100).toFixed(0)}% margin</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Contractor Health */}
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
+              Contractor Health
+              <Users className="w-5 h-5 text-blue-500" />
+            </h3>
+            <div className="space-y-3">
+              {contractors.map(contractor => {
+                const insight = contractorInsights[contractor.id] || {};
+                return (
+                  <div key={contractor.id} className="border-l-4 border-blue-500 pl-3">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-medium text-sm">{contractor.name}</p>
+                        <p className="text-xs text-gray-500">{contractor.projectsActive} active projects</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs font-medium text-gray-600">Acceptance</p>
+                        <p className="text-sm font-semibold text-green-600">{insight.acceptanceRate?.toFixed(0) || 0}%</p>
+                      </div>
+                    </div>
+                    <div className="mt-2 flex gap-2">
+                      <span className={`text-xs px-2 py-1 rounded-full ${
+                        contractor.outstandingBalance > contractor.creditLimit * 0.8 
+                          ? 'bg-red-100 text-red-700' 
+                          : 'bg-green-100 text-green-700'
+                      }`}>
+                        Credit: £{(contractor.creditLimit - contractor.outstandingBalance).toLocaleString()}
+                      </span>
+                      <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-700">
+                        {contractor.discountTier}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+            <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
+              Quick Actions
+              <Zap className="w-5 h-5 text-purple-500" />
+            </h3>
+            <div className="space-y-3">
+              <button
+                onClick={() => setShowQuoteBuilder(true)}
+                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+              >
+                <Plus className="w-5 h-5" />
+                New Quote
+              </button>
+              <button className="w-full bg-gray-100 text-gray-700 py-3 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
+                <Upload className="w-5 h-5" />
+                Import Products
+              </button>
+              <button className="w-full bg-gray-100 text-gray-700 py-3 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
+                <Download className="w-5 h-5" />
+                Export Report
+              </button>
+            </div>
+
+            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+              <h4 className="font-medium text-sm mb-2">Pro Tip</h4>
+              <p className="text-xs text-gray-600">
+                Your average margin is {avgMargin.toFixed(1)}%. Consider focusing on {products.filter(p => ((p.ukPrice - p.hocPrice) / p.ukPrice * 100) > avgMargin).length} products with above-average margins.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+          <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
+          <div className="space-y-3">
+            {quotes.slice(0, 5).map(quote => {
+              const totals = calculateQuoteTotals(quote);
+              return (
+                <div key={quote.id} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center gap-4">
+                    <div className={`w-2 h-2 rounded-full ${
+                      quote.status === 'sent' ? 'bg-yellow-500' : 
+                      quote.status === 'accepted' ? 'bg-green-500' : 'bg-gray-500'
+                    }`} />
+                    <div>
+                      <p className="font-medium">{quote.projectName}</p>
+                      <p className="text-sm text-gray-600">{quote.contractor.name}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold">£{totals.total.toLocaleString()}</p>
+                    <p className="text-sm text-green-600">Save £{totals.savings.toLocaleString()}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderProducts = () => {
+    const filteredProducts = products.filter(p => {
+      const matchesSearch = p.specs.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          p.type.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = filterCategory === 'ALL' || p.category === filterCategory;
+      return matchesSearch && matchesCategory;
+    });
+
+    return (
+      <div className="space-y-6">
+        {/* Filters */}
+        <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="ALL">All Categories</option>
+              {[...new Set(products.map(p => p.category))].map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
+              <Upload className="w-4 h-4" />
+              Import CSV
+            </button>
+          </div>
+        </div>
+
+        {/* Product Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {filteredProducts.map(product => {
+            const margin = ((product.ukPrice - product.hocPrice) / product.ukPrice * 100);
+            const savings = product.ukPrice - product.hocPrice;
+            
+            return (
+              <div key={product.id} className="bg-white rounded-xl shadow-sm p-4 border border-gray-200 hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-start mb-3">
+                  <span className="text-xs font-medium text-gray-500">{product.id}</span>
+                  <span className={`text-xs px-2 py-1 rounded-full ${
+                    margin > 40 ? 'bg-green-100 text-green-700' : 
+                    margin > 30 ? 'bg-blue-100 text-blue-700' : 
+                    'bg-gray-100 text-gray-700'
+                  }`}>
+                    {margin.toFixed(0)}% margin
+                  </span>
+                </div>
+                
+                <h4 className="font-semibold text-sm mb-1">{product.specs}</h4>
+                <p className="text-xs text-gray-600 mb-3">{product.type} • {product.supplier}</p>
+                
+                <div className="space-y-2 mb-4">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">UK Price:</span>
+                    <span className="line-through text-gray-400">£{product.ukPrice}{product.unit || ''}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium">HOC Price:</span>
+                    <span className="font-bold text-green-600">£{product.hocPrice}{product.unit || ''}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">You save:</span>
+                    <span className="font-medium text-green-600">£{savings}</span>
+                  </div>
+                </div>
+
+                <div className="flex gap-2 text-xs text-gray-500 mb-3">
+                  <span className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    {product.leadTime}w
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Package className="w-3 h-3" />
+                    MOQ: {product.moq}
+                  </span>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setCurrentQuote({
+                      ...currentQuote,
+                      items: [...currentQuote.items, { product, quantity: product.moq || 1, customPrice: null }]
+                    });
+                  }}
+                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                >
+                  Add to Quote
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  const renderQuoteBuilder = () => {
+    const totals = calculateQuoteTotals(currentQuote);
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+          <div className="p-6 border-b flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Build Quote</h2>
+            <button
+              onClick={() => setShowQuoteBuilder(false)}
+              className="p-2 hover:bg-gray-100 rounded-lg"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+            {/* Quote Details */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Contractor</label>
+                <select 
+                  value={currentQuote.contractor?.id || ''}
+                  onChange={(e) => setCurrentQuote({
+                    ...currentQuote,
+                    contractor: contractors.find(c => c.id === parseInt(e.target.value))
+                  })}
+                  className="w-full px-3 py-2 border rounded-lg"
+                >
+                  <option value="">Select contractor...</option>
+                  {contractors.map(c => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
+                <input
+                  type="text"
+                  value={currentQuote.projectName}
+                  onChange={(e) => setCurrentQuote({...currentQuote, projectName: e.target.value})}
+                  className="w-full px-3 py-2 border rounded-lg"
+                  placeholder="e.g., Kensington Penthouse"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Additional Discount (%)</label>
+                <input
+                  type="number"
+                  value={currentQuote.discount}
+                  onChange={(e) => setCurrentQuote({...currentQuote, discount: parseFloat(e.target.value) || 0})}
+                  className="w-full px-3 py-2 border rounded-lg"
+                  min="0"
+                  max="20"
+                />
+              </div>
+            </div>
+
+            {/* Quote Items */}
+            {currentQuote.items.length > 0 ? (
+              <div className="mb-6">
+                <h3 className="font-semibold mb-3">Quote Items</h3>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="text-left p-3 text-sm font-medium text-gray-700">Product</th>
+                        <th className="text-center p-3 text-sm font-medium text-gray-700">Qty</th>
+                        <th className="text-right p-3 text-sm font-medium text-gray-700">Unit Price</th>
+                        <th className="text-right p-3 text-sm font-medium text-gray-700">Total</th>
+                        <th className="text-center p-3 text-sm font-medium text-gray-700">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentQuote.items.map((item, idx) => (
+                        <tr key={idx} className="border-b">
+                          <td className="p-3">
+                            <div>
+                              <p className="font-medium">{item.product.specs}</p>
+                              <p className="text-sm text-gray-600">{item.product.type}</p>
+                            </div>
+                          </td>
+                          <td className="text-center p-3">
+                            <input
+                              type="number"
+                              value={item.quantity}
+                              onChange={(e) => {
+                                const newItems = [...currentQuote.items];
+                                newItems[idx].quantity = parseInt(e.target.value) || 1;
+                                setCurrentQuote({...currentQuote, items: newItems});
+                              }}
+                              className="w-20 px-2 py-1 border rounded text-center"
+                              min={item.product.moq || 1}
+                            />
+                          </td>
+                          <td className="text-right p-3">
+                            £{item.customPrice || item.product.hocPrice}
+                          </td>
+                          <td className="text-right p-3 font-medium">
+                            £{((item.customPrice || item.product.hocPrice) * item.quantity).toLocaleString()}
+                          </td>
+                          <td className="text-center p-3">
+                            <button
+                              onClick={() => {
+                                setCurrentQuote({
+                                  ...currentQuote,
+                                  items: currentQuote.items.filter((_, i) => i !== idx)
+                                });
+                              }}
+                              className="text-red-600 hover:text-red-800"
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-12 mb-6 bg-gray-50 rounded-lg">
+                <Package className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                <p className="text-gray-600">No items added yet</p>
+                <p className="text-sm text-gray-500 mt-2">Add products from the catalog</p>
+              </div>
+            )}
+
+            {/* Quote Summary */}
+            {currentQuote.items.length > 0 && (
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="font-semibold mb-4">Quote Summary</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span>Subtotal (HOC Prices)</span>
+                    <span>£{totals.subtotal.toLocaleString()}</span>
+                  </div>
+                  {currentQuote.discount > 0 && (
+                    <div className="flex justify-between text-green-600">
+                      <span>Additional Discount ({currentQuote.discount}%)</span>
+                      <span>-£{totals.discountAmount.toLocaleString()}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between font-semibold text-lg pt-2 border-t">
+                    <span>Total</span>
+                    <span>£{totals.total.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-gray-600">
+                    <span>UK Retail Value</span>
+                    <span className="line-through">£{totals.ukTotal.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-green-600 font-semibold">
+                    <span>Customer Saves</span>
+                    <span>£{totals.savings.toLocaleString()} ({totals.savingsPercent.toFixed(1)}%)</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Notes */}
+            <div className="mt-6">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+              <textarea
+                value={currentQuote.notes}
+                onChange={(e) => setCurrentQuote({...currentQuote, notes: e.target.value})}
+                className="w-full px-3 py-2 border rounded-lg"
+                rows="3"
+                placeholder="Add any special requirements or notes..."
+              />
+            </div>
+          </div>
+
+          <div className="p-6 border-t bg-gray-50 flex justify-end gap-3">
+            <button
+              onClick={() => setShowQuoteBuilder(false)}
+              className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                // Save quote logic
+                const newQuote = {
+                  id: `Q${new Date().getFullYear()}-${String(quotes.length + 1).padStart(3, '0')}`,
+                  ...currentQuote,
+                  createdDate: new Date().toISOString().split('T')[0],
+                  expiryDate: new Date(Date.now() + currentQuote.expiryDays * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                  status: 'draft'
+                };
+                setQuotes([...quotes, newQuote]);
+                setShowQuoteBuilder(false);
+                setCurrentQuote({
+                  contractor: null,
+                  projectName: '',
+                  items: [],
+                  discount: 0,
+                  notes: '',
+                  expiryDays: 30
+                });
+              }}
+              className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+            >
+              Save Draft
+            </button>
+            <button
+              onClick={() => {
+                // Send quote logic
+                alert('Quote sent successfully!');
+                setShowQuoteBuilder(false);
+              }}
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              disabled={!currentQuote.contractor || !currentQuote.projectName || currentQuote.items.length === 0}
+            >
+              <Send className="w-4 h-4" />
+              Send Quote
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">HC</span>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">House of Clarence</h1>
+                <p className="text-xs text-gray-500">Premium Second Fix Solutions</p>
+              </div>
+            </div>
+            
+            <nav className="flex gap-2">
+              {[
+                { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
+                { id: 'products', label: 'Products', icon: Package },
+                { id: 'quotes', label: 'Quotes', icon: FileText },
+                { id: 'contractors', label: 'Contractors', icon: Users },
+                { id: 'analytics', label: 'Analytics', icon: TrendingUp }
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                    activeTab === tab.id 
+                      ? 'bg-blue-50 text-blue-600 font-medium' 
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  <tab.icon className="w-4 h-4" />
+                  <span className="hidden md:inline">{tab.label}</span>
+                </button>
+              ))}
+            </nav>
+
+            <div className="flex items-center gap-3">
+              <button className="p-2 hover:bg-gray-100 rounded-lg relative">
+                <AlertCircle className="w-5 h-5 text-gray-600" />
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+              </button>
+              <button className="p-2 hover:bg-gray-100 rounded-lg">
+                <Settings className="w-5 h-5 text-gray-600" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {activeTab === 'dashboard' && renderDashboard()}
+        {activeTab === 'products' && renderProducts()}
+        {activeTab === 'quotes' && (
+          <div className="text-center py-12">
+            <FileText className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+            <h3 className="text-xl font-semibold mb-2">Quotes Management</h3>
+            <p className="text-gray-600 mb-4">View and manage all your quotes</p>
+            <button 
+              onClick={() => setShowQuoteBuilder(true)}
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
+            >
+              Create New Quote
+            </button>
+          </div>
+        )}
+        {activeTab === 'contractors' && (
+          <div className="text-center py-12">
+            <Users className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+            <h3 className="text-xl font-semibold mb-2">Contractor Management</h3>
+            <p className="text-gray-600">Manage your contractor relationships</p>
+          </div>
+        )}
+        {activeTab === 'analytics' && (
+          <div className="text-center py-12">
+            <TrendingUp className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+            <h3 className="text-xl font-semibold mb-2">Business Analytics</h3>
+            <p className="text-gray-600">Deep insights into your business performance</p>
+          </div>
+        )}
+      </main>
+
+      {/* Quote Builder Modal */}
+      {showQuoteBuilder && renderQuoteBuilder()}
+    </div>
+  );
+};
+
+export default HouseOfClarenceOS;
