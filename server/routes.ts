@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertProductSchema, insertContractorSchema, insertQuoteSchema, insertOrderSchema, insertSupplierSchema } from "@shared/schema";
 import { aiChatService } from "./ai-chat";
+import { uploadMiddleware, importProductsFromExcel } from "./upload-service";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Products
@@ -299,6 +300,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("AI Chat Error:", error);
       res.status(500).json({ error: "Failed to process chat message" });
+    }
+  });
+
+  // Excel Upload endpoint
+  app.post("/api/upload-excel", uploadMiddleware, async (req: any, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+
+      const results = await importProductsFromExcel(req.file.path);
+      
+      res.json({
+        message: "Excel file processed successfully",
+        results: {
+          imported: results.success,
+          errors: results.errors
+        }
+      });
+    } catch (error) {
+      console.error("Excel Upload Error:", error);
+      res.status(500).json({ error: "Failed to process Excel file" });
     }
   });
 

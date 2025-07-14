@@ -4,7 +4,7 @@ import { useBusinessData } from "@/hooks/use-business-data";
 import { 
   PoundSterling, Users, Target, FileText, ArrowUp, 
   Zap, TrendingUp, Clock, CheckCircle, Plus, UserPlus,
-  BarChart3, Package, Search, Bell, MessageCircle
+  BarChart3, Package, Search, Bell, MessageCircle, Upload
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,11 +17,13 @@ import OrderManagement from "@/components/order-management";
 import SupplierManagement from "@/components/supplier-management";
 import Analytics from "@/components/analytics";
 import AIChat from "@/components/ai-chat";
+import ExcelUpload from "@/components/excel-upload";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [showQuoteBuilder, setShowQuoteBuilder] = useState(false);
   const [showAIChat, setShowAIChat] = useState(false);
+  const [showExcelUpload, setShowExcelUpload] = useState(false);
   const { products, contractors, quotes, orders, suppliers } = useBusinessData();
 
   // Calculate KPIs
@@ -49,6 +51,14 @@ export default function Dashboard() {
             >
               <Plus className="w-4 h-4" />
               New Quote
+            </Button>
+            <Button
+              onClick={() => setShowExcelUpload(true)}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <Upload className="w-4 h-4" />
+              Upload Excel
             </Button>
             <Button variant="outline" size="icon">
               <Search className="w-5 h-5" />
@@ -393,6 +403,7 @@ export default function Dashboard() {
         <QuoteBuilder onClose={() => setShowQuoteBuilder(false)} />
       )}
       <AIChat isOpen={showAIChat} onClose={() => setShowAIChat(false)} />
+      <ExcelUpload isOpen={showExcelUpload} onClose={() => setShowExcelUpload(false)} />
     </div>
   );
 }
