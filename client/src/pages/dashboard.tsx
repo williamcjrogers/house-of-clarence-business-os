@@ -4,7 +4,7 @@ import { useBusinessData } from "@/hooks/use-business-data";
 import { 
   PoundSterling, Users, Target, FileText, ArrowUp, 
   Zap, TrendingUp, Clock, CheckCircle, Plus, UserPlus,
-  BarChart3, Package, Search, Bell
+  BarChart3, Package, Search, Bell, MessageCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,10 +16,12 @@ import QuoteBuilder from "@/components/quote-builder";
 import OrderManagement from "@/components/order-management";
 import SupplierManagement from "@/components/supplier-management";
 import Analytics from "@/components/analytics";
+import AIChat from "@/components/ai-chat";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [showQuoteBuilder, setShowQuoteBuilder] = useState(false);
+  const [showAIChat, setShowAIChat] = useState(false);
   const { products, contractors, quotes, orders, suppliers } = useBusinessData();
 
   // Calculate KPIs
@@ -53,6 +55,14 @@ export default function Dashboard() {
             </Button>
             <Button variant="outline" size="icon">
               <Bell className="w-5 h-5" />
+            </Button>
+            <Button 
+              variant="outline" 
+              size="icon"
+              onClick={() => setShowAIChat(true)}
+              className="bg-gradient-to-r from-blue-500 to-purple-500 text-white border-none hover:from-blue-600 hover:to-purple-600"
+            >
+              <MessageCircle className="w-5 h-5" />
             </Button>
           </div>
         </div>
@@ -382,6 +392,7 @@ export default function Dashboard() {
       {showQuoteBuilder && (
         <QuoteBuilder onClose={() => setShowQuoteBuilder(false)} />
       )}
+      <AIChat isOpen={showAIChat} onClose={() => setShowAIChat(false)} />
     </div>
   );
 }

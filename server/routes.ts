@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertProductSchema, insertContractorSchema, insertQuoteSchema, insertOrderSchema, insertSupplierSchema } from "@shared/schema";
+import { aiChatService } from "./ai-chat";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Products
@@ -281,6 +282,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ message: "Supplier deleted" });
     } catch (error) {
       res.status(500).json({ message: "Failed to delete supplier" });
+    }
+  });
+
+  // AI Chat endpoint
+  app.post("/api/ai-chat", async (req, res) => {
+    try {
+      const { message } = req.body;
+      
+      if (!message) {
+        return res.status(400).json({ error: "Message is required" });
+      }
+
+      const response = await aiChatService.processPropertyQuery(message);
+      res.json({ response });
+    } catch (error) {
+      console.error("AI Chat Error:", error);
+      res.status(500).json({ error: "Failed to process chat message" });
     }
   });
 
