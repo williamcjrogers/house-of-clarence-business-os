@@ -1,5 +1,5 @@
 import multer from 'multer';
-import * as XLSX from 'xlsx';
+import XLSX from 'xlsx';
 import sharp from 'sharp';
 import { storage } from './storage';
 import fs from 'fs';
@@ -21,7 +21,7 @@ const upload = multer({
     }
   }),
   limits: {
-    fileSize: 50 * 1024 * 1024, // 50MB limit
+    fileSize: 100 * 1024 * 1024, // 100MB limit
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = [
@@ -70,7 +70,8 @@ const extractImagesFromExcel = async (filePath: string): Promise<Record<string, 
   
   try {
     // Read the Excel file
-    const workbook = XLSX.readFile(filePath);
+    const data = fs.readFileSync(filePath);
+    const workbook = XLSX.read(data, { type: 'buffer' });
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     
     // Excel files with embedded images require special handling
@@ -88,12 +89,45 @@ const extractImagesFromExcel = async (filePath: string): Promise<Record<string, 
   }
 };
 
+// Helper function to find column index by header names
+const findColumnIndex = (headers: string[], searchTerms: string[]): number => {
+  for (let i = 0; i < headers.length; i++) {
+    const header = headers[i];
+    if (!header) continue;
+    
+    const lowerHeader = header.toLowerCase().trim();
+    for (const term of searchTerms) {
+      if (lowerHeader.includes(term.toLowerCase())) {
+        return i;
+      }
+    }
+  }
+  return -1;
+};
+
+// Helper function to get cell value safely
+const getCellValue = (row: any[], columnIndex: number): string => {
+  if (columnIndex === -1 || !row || columnIndex >= row.length) {
+    return '';
+  }
+  const value = row[columnIndex];
+  return value ? String(value).trim() : '';
+};
+
+// Helper function to clean price values
+const cleanPriceValue = (price: string): string => {
+  if (!price) return '0';
+  // Remove currency symbols and normalize
+  return price.replace(/[£$€,]/g, '').trim() || '0';
+};
+
 // Parse Excel file and extract product data
 export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]> => {
   const products: ParsedProduct[] = [];
   
   try {
-    const workbook = XLSX.readFile(filePath);
+    const data = fs.readFileSync(filePath);
+    const workbook = XLSX.read(data, { type: 'buffer' });
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
     
@@ -124,17 +158,19 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
     // Map column indices based on your spreadsheet structure
     const columnMap = {
       type: findColumnIndex(headers, ['type', 'item type']),
-      productCode: findColumnIndex(headers, ['product code', 'code', 'item code']),
+      productCode: findColumnIndex(headers, ['s.no', 'product code', 'code', 'item code']),
       category: findColumnIndex(headers, ['product category', 'category']),
-      subCategory: findColumnIndex(headers, ['sub category', 'subcategory']),
+      subCategory: findColumnIndex(headers, ['title / location', 'title/location', 'sub category', 'subcategory']),
       specs: findColumnIndex(headers, ['product specs', 'specs', 'specification']),
       hocPrice: findColumnIndex(headers, ['hoc price', 'house price', 'cost']),
       ukPrice: findColumnIndex(headers, ['uk price', 'retail price', 'price']),
-      link: findColumnIndex(headers, ['uk product link', 'link', 'url']),
+      link: findColumnIndex(headers, ['uk - product link', 'uk product link', 'link', 'url']),
       supplier: findColumnIndex(headers, ['supplier', 'manufacturer'])
     };
     
     // Process data rows
+    let currentCategory = 'General';
+    
     for (let i = headerRowIndex + 1; i < jsonData.length; i++) {
       const row = jsonData[i] as any[];
       
@@ -143,10 +179,25 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
         continue;
       }
       
+      // Check if this is a section header row (like "A", "KITCHEN")
+      const firstCell = getCellValue(row, 0);
+      const secondCell = getCellValue(row, 1);
+      
+      // If first cell is a letter and second cell is a category name, update current category
+      if (firstCell.length === 1 && firstCell.match(/[A-Z]/) && secondCell && !getCellValue(row, 2)) {
+        currentCategory = secondCell;
+        continue;
+      }
+      
+      // Skip section header rows that don't have product data
+      if (!getCellValue(row, columnMap.productCode) && !getCellValue(row, columnMap.specs)) {
+        continue;
+      }
+      
       const product: ParsedProduct = {
         type: getCellValue(row, columnMap.type) || 'Product',
         productCode: getCellValue(row, columnMap.productCode) || `AUTO-${Date.now()}-${i}`,
-        category: getCellValue(row, columnMap.category) || 'General',
+        category: getCellValue(row, columnMap.category) || currentCategory,
         subCategory: getCellValue(row, columnMap.subCategory) || '',
         specs: getCellValue(row, columnMap.specs) || '',
         hocPrice: getCellValue(row, columnMap.hocPrice) || '0',
@@ -163,7 +214,10 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
       product.hocPrice = cleanPriceValue(product.hocPrice);
       product.ukPrice = cleanPriceValue(product.ukPrice);
       
-      products.push(product);
+      // Only add products with meaningful data
+      if (product.specs || product.hocPrice !== '0' || product.ukPrice !== '0') {
+        products.push(product);
+      }
     }
     
     console.log(`Parsed ${products.length} products from Excel file`);
@@ -175,38 +229,7 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
   }
 };
 
-// Helper function to find column index by possible names
-const findColumnIndex = (headers: string[], possibleNames: string[]): number => {
-  for (let i = 0; i < headers.length; i++) {
-    const header = headers[i]?.toLowerCase() || '';
-    if (possibleNames.some(name => header.includes(name.toLowerCase()))) {
-      return i;
-    }
-  }
-  return -1;
-};
 
-// Helper function to get cell value safely
-const getCellValue = (row: any[], columnIndex: number): string => {
-  if (columnIndex === -1 || !row[columnIndex]) {
-    return '';
-  }
-  return String(row[columnIndex]).trim();
-};
-
-// Helper function to clean price values
-const cleanPriceValue = (price: string): string => {
-  if (!price) return '0';
-  
-  // Remove currency symbols and clean up
-  const cleaned = price.toString()
-    .replace(/[£$€,]/g, '')
-    .replace(/[^\d.]/g, '')
-    .trim();
-  
-  const number = parseFloat(cleaned);
-  return isNaN(number) ? '0' : number.toString();
-};
 
 // Import products into storage
 export const importProductsFromExcel = async (filePath: string): Promise<{ success: number, errors: string[] }> => {
