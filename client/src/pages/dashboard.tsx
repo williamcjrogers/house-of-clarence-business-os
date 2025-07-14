@@ -18,6 +18,7 @@ import SupplierManagement from "@/components/supplier-management";
 import Analytics from "@/components/analytics";
 import AIChat from "@/components/ai-chat";
 import ExcelUpload from "@/components/excel-upload";
+import Catalogue from "@/components/catalogue";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -374,6 +375,8 @@ export default function Dashboard() {
     switch (activeTab) {
       case "dashboard":
         return renderDashboard();
+      case "catalogue":
+        return <Catalogue />;
       case "products":
         return <ProductCatalog />;
       case "contractors":

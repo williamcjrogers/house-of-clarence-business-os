@@ -16,6 +16,7 @@ export const products = pgTable("products", {
   moq: integer("moq").notNull(),
   supplier: varchar("supplier", { length: 100 }).notNull(),
   link: text("link"),
+  imageUrl: text("image_url"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

@@ -6,6 +6,8 @@ import {
   type Order, type InsertOrder,
   type Supplier, type InsertSupplier
 } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   // Products
@@ -499,4 +501,151 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class DatabaseStorage implements IStorage {
+  // Products
+  async getProducts(): Promise<Product[]> {
+    return await db.select().from(products);
+  }
+
+  async getProduct(id: number): Promise<Product | undefined> {
+    const [product] = await db.select().from(products).where(eq(products.id, id));
+    return product;
+  }
+
+  async createProduct(product: InsertProduct): Promise<Product> {
+    const [newProduct] = await db.insert(products).values(product).returning();
+    return newProduct;
+  }
+
+  async updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined> {
+    const [updated] = await db
+      .update(products)
+      .set({ ...product, updatedAt: new Date() })
+      .where(eq(products.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteProduct(id: number): Promise<boolean> {
+    const result = await db.delete(products).where(eq(products.id, id));
+    return result.rowCount > 0;
+  }
+
+  // Contractors
+  async getContractors(): Promise<Contractor[]> {
+    return await db.select().from(contractors);
+  }
+
+  async getContractor(id: number): Promise<Contractor | undefined> {
+    const [contractor] = await db.select().from(contractors).where(eq(contractors.id, id));
+    return contractor;
+  }
+
+  async createContractor(contractor: InsertContractor): Promise<Contractor> {
+    const [newContractor] = await db.insert(contractors).values(contractor).returning();
+    return newContractor;
+  }
+
+  async updateContractor(id: number, contractor: Partial<InsertContractor>): Promise<Contractor | undefined> {
+    const [updated] = await db
+      .update(contractors)
+      .set({ ...contractor, updatedAt: new Date() })
+      .where(eq(contractors.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteContractor(id: number): Promise<boolean> {
+    const result = await db.delete(contractors).where(eq(contractors.id, id));
+    return result.rowCount > 0;
+  }
+
+  // Quotes
+  async getQuotes(): Promise<Quote[]> {
+    return await db.select().from(quotes);
+  }
+
+  async getQuote(id: number): Promise<Quote | undefined> {
+    const [quote] = await db.select().from(quotes).where(eq(quotes.id, id));
+    return quote;
+  }
+
+  async createQuote(quote: InsertQuote): Promise<Quote> {
+    const [newQuote] = await db.insert(quotes).values(quote).returning();
+    return newQuote;
+  }
+
+  async updateQuote(id: number, quote: Partial<InsertQuote>): Promise<Quote | undefined> {
+    const [updated] = await db
+      .update(quotes)
+      .set({ ...quote, updatedAt: new Date() })
+      .where(eq(quotes.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteQuote(id: number): Promise<boolean> {
+    const result = await db.delete(quotes).where(eq(quotes.id, id));
+    return result.rowCount > 0;
+  }
+
+  // Orders
+  async getOrders(): Promise<Order[]> {
+    return await db.select().from(orders);
+  }
+
+  async getOrder(id: number): Promise<Order | undefined> {
+    const [order] = await db.select().from(orders).where(eq(orders.id, id));
+    return order;
+  }
+
+  async createOrder(order: InsertOrder): Promise<Order> {
+    const [newOrder] = await db.insert(orders).values(order).returning();
+    return newOrder;
+  }
+
+  async updateOrder(id: number, order: Partial<InsertOrder>): Promise<Order | undefined> {
+    const [updated] = await db
+      .update(orders)
+      .set({ ...order, updatedAt: new Date() })
+      .where(eq(orders.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteOrder(id: number): Promise<boolean> {
+    const result = await db.delete(orders).where(eq(orders.id, id));
+    return result.rowCount > 0;
+  }
+
+  // Suppliers
+  async getSuppliers(): Promise<Supplier[]> {
+    return await db.select().from(suppliers);
+  }
+
+  async getSupplier(id: number): Promise<Supplier | undefined> {
+    const [supplier] = await db.select().from(suppliers).where(eq(suppliers.id, id));
+    return supplier;
+  }
+
+  async createSupplier(supplier: InsertSupplier): Promise<Supplier> {
+    const [newSupplier] = await db.insert(suppliers).values(supplier).returning();
+    return newSupplier;
+  }
+
+  async updateSupplier(id: number, supplier: Partial<InsertSupplier>): Promise<Supplier | undefined> {
+    const [updated] = await db
+      .update(suppliers)
+      .set({ ...supplier, updatedAt: new Date() })
+      .where(eq(suppliers.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteSupplier(id: number): Promise<boolean> {
+    const result = await db.delete(suppliers).where(eq(suppliers.id, id));
+    return result.rowCount > 0;
+  }
+}
+
+export const storage = new DatabaseStorage();

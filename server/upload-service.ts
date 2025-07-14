@@ -1,6 +1,7 @@
 import multer from 'multer';
 import XLSX from 'xlsx';
 import sharp from 'sharp';
+import yauzl from 'yauzl';
 import { storage } from './storage';
 import fs from 'fs';
 import path from 'path';
@@ -64,28 +65,158 @@ const ensureImagesDirectory = () => {
   return imagesDir;
 };
 
-// Extract images from Excel file
-const extractImagesFromExcel = async (filePath: string): Promise<Record<string, string>> => {
-  const imageMap: Record<string, string> = {};
+// Extract images from Excel file and create row-to-image mapping
+const extractImagesFromExcel = async (filePath: string): Promise<Record<number, string>> => {
+  const rowImageMap: Record<number, string> = {};
   
   try {
-    // Read the Excel file
-    const data = fs.readFileSync(filePath);
-    const workbook = XLSX.read(data, { type: 'buffer' });
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    // Create directory for extracted images
+    const imagesDir = path.join('uploads', 'extracted-images');
+    if (!fs.existsSync(imagesDir)) {
+      fs.mkdirSync(imagesDir, { recursive: true });
+    }
+
+    // First, extract all images from the Excel archive
+    const imageFiles: Record<string, string> = {};
     
-    // Excel files with embedded images require special handling
-    // For now, we'll create a placeholder system for image references
-    // In a production environment, you'd use a library like node-xlsx with image extraction
+    await new Promise<void>((resolve, reject) => {
+      yauzl.open(filePath, { lazyEntries: true }, (err, zipfile) => {
+        if (err) {
+          console.error('Error opening Excel file as ZIP:', err);
+          resolve();
+          return;
+        }
+
+        if (!zipfile) {
+          resolve();
+          return;
+        }
+
+        zipfile.readEntry();
+        
+        zipfile.on('entry', (entry) => {
+          // Look for image files in the media folder
+          if (entry.fileName.startsWith('xl/media/') && 
+              (entry.fileName.endsWith('.png') || 
+               entry.fileName.endsWith('.jpg') || 
+               entry.fileName.endsWith('.jpeg') ||
+               entry.fileName.endsWith('.gif') ||
+               entry.fileName.endsWith('.tmp'))) {
+            
+            zipfile.openReadStream(entry, (err, readStream) => {
+              if (err) {
+                console.error('Error reading image entry:', err);
+                zipfile.readEntry();
+                return;
+              }
+
+              if (!readStream) {
+                zipfile.readEntry();
+                return;
+              }
+
+              // Handle .tmp files by giving them proper extensions
+              const originalName = path.basename(entry.fileName);
+              const imageFileName = originalName.endsWith('.tmp') 
+                ? `extracted-${Date.now()}-${originalName.replace('.tmp', '.png')}`
+                : `extracted-${Date.now()}-${originalName}`;
+              const imagePath = path.join(imagesDir, imageFileName);
+              const writeStream = fs.createWriteStream(imagePath);
+              
+              readStream.pipe(writeStream);
+              
+              writeStream.on('close', () => {
+                // Store the relative path for serving
+                const relativePath = `/uploads/extracted-images/${imageFileName}`;
+                imageFiles[entry.fileName] = relativePath;
+                console.log(`Extracted image: ${entry.fileName} -> ${relativePath}`);
+                zipfile.readEntry();
+              });
+
+              writeStream.on('error', (err) => {
+                console.error('Error writing image file:', err);
+                zipfile.readEntry();
+              });
+            });
+          } else {
+            zipfile.readEntry();
+          }
+        });
+
+        zipfile.on('end', () => {
+          console.log(`Extracted ${Object.keys(imageFiles).length} images from Excel file`);
+          resolve();
+        });
+
+        zipfile.on('error', (err) => {
+          console.error('Error processing ZIP file:', err);
+          resolve();
+        });
+      });
+    });
+
+    // Now map images to rows based on their position in the Excel file
+    // Since Excel embeds images sequentially, we'll map them to data rows
+    const imageUrls = Object.values(imageFiles);
+    if (imageUrls.length > 0) {
+      // Read the Excel file to get row count and map images accordingly
+      const data = fs.readFileSync(filePath);
+      const workbook = XLSX.read(data, { type: 'buffer' });
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+      
+      // Find header row
+      let headerRowIndex = -1;
+      for (let i = 0; i < jsonData.length; i++) {
+        const row = jsonData[i] as any[];
+        if (row.some(cell => 
+          typeof cell === 'string' && 
+          (cell.toLowerCase().includes('product') || 
+           cell.toLowerCase().includes('category') || 
+           cell.toLowerCase().includes('price'))
+        )) {
+          headerRowIndex = i;
+          break;
+        }
+      }
+
+      // Map images to product rows (starting after header row)
+      let imageIndex = 0;
+      for (let i = headerRowIndex + 1; i < jsonData.length && imageIndex < imageUrls.length; i++) {
+        const row = jsonData[i] as any[];
+        
+        // Skip empty rows
+        if (!row || row.every(cell => !cell || cell === '')) {
+          continue;
+        }
+        
+        // Skip section header rows
+        const firstCell = row[0] ? String(row[0]).trim() : '';
+        const secondCell = row[1] ? String(row[1]).trim() : '';
+        
+        if (firstCell.length === 1 && firstCell.match(/[A-Z]/) && secondCell && !row[2]) {
+          continue;
+        }
+        
+        // Check if this row has product data
+        const hasProductData = row.some((cell, index) => {
+          if (!cell) return false;
+          const cellStr = String(cell).trim();
+          return cellStr && cellStr !== '' && index > 0; // Skip first column for product code
+        });
+        
+        if (hasProductData) {
+          rowImageMap[i] = imageUrls[imageIndex];
+          console.log(`Mapped row ${i} to image: ${imageUrls[imageIndex]}`);
+          imageIndex++;
+        }
+      }
+    }
     
-    // This is a simplified version - in reality, extracting images from Excel is complex
-    // We'll create a system where users can upload images separately or reference them by URL
-    
-    console.log('Excel file processed. Image extraction would require additional library support.');
-    return imageMap;
+    return rowImageMap;
   } catch (error) {
     console.error('Error extracting images from Excel:', error);
-    return {};
+    return rowImageMap;
   }
 };
 
@@ -121,6 +252,11 @@ const cleanPriceValue = (price: string): string => {
   return price.replace(/[£$€,]/g, '').trim() || '0';
 };
 
+// Helper function to get image for a specific row
+const getImageForRow = (rowImageMap: Record<number, string>, rowIndex: number): string | null => {
+  return rowImageMap[rowIndex] || null;
+};
+
 // Parse Excel file and extract product data
 export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]> => {
   const products: ParsedProduct[] = [];
@@ -131,8 +267,8 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
     
-    // Extract images (simplified for now)
-    const imageMap = await extractImagesFromExcel(filePath);
+    // Extract images with row mapping
+    const rowImageMap = await extractImagesFromExcel(filePath);
     
     // Find header row (looking for key columns)
     let headerRowIndex = -1;
@@ -194,9 +330,13 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
         continue;
       }
       
+      const productCode = getCellValue(row, columnMap.productCode) || `AUTO-${Date.now()}-${i}`;
+      const imageUrl = getImageForRow(rowImageMap, i);
+      console.log(`Product ${productCode} (row ${i}) assigned image: ${imageUrl}`);
+      
       const product: ParsedProduct = {
         type: getCellValue(row, columnMap.type) || 'Product',
-        productCode: getCellValue(row, columnMap.productCode) || `AUTO-${Date.now()}-${i}`,
+        productCode: productCode,
         category: getCellValue(row, columnMap.category) || currentCategory,
         subCategory: getCellValue(row, columnMap.subCategory) || '',
         specs: getCellValue(row, columnMap.specs) || '',
@@ -207,7 +347,7 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
         leadTime: 7, // Default lead time
         moq: 1, // Default minimum order quantity
         supplier: getCellValue(row, columnMap.supplier) || 'Unknown',
-        imageUrl: imageMap[i] || null
+        imageUrl: imageUrl
       };
       
       // Clean up price values
@@ -252,7 +392,8 @@ export const importProductsFromExcel = async (filePath: string): Promise<{ succe
           unit: productData.unit || null,
           leadTime: productData.leadTime,
           moq: productData.moq,
-          supplier: productData.supplier
+          supplier: productData.supplier,
+          imageUrl: productData.imageUrl
         });
         
         results.success++;
