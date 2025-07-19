@@ -1,6 +1,6 @@
 import { 
   BarChart3, Package, Users, FileText, ShoppingCart, 
-  Truck, TrendingUp, BookOpen
+  Truck, TrendingUp, BookOpen, Palette
 } from "lucide-react";
 
 interface SidebarProps {
@@ -12,6 +12,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: BarChart3 },
     { id: "catalogue", label: "Catalogue", icon: BookOpen },
+    { id: "moodboard", label: "Mood Board", icon: Palette },
     { id: "products", label: "Products", icon: Package },
     { id: "contractors", label: "Contractors", icon: Users },
     { id: "quotes", label: "Quotes", icon: FileText },

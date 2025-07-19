@@ -6,6 +6,8 @@ import { storage } from "./storage";
 import { insertProductSchema, insertContractorSchema, insertQuoteSchema, insertOrderSchema, insertSupplierSchema } from "@shared/schema";
 import { aiChatService } from "./ai-chat";
 import { uploadMiddleware, importProductsFromExcel } from "./upload-service";
+import { moodBoardAnalyzer } from "./moodboard-analyzer";
+import multer from "multer";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Serve static files for extracted images
@@ -305,6 +307,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("AI Chat Error:", error);
       res.status(500).json({ error: "Failed to process chat message" });
+    }
+  });
+
+  // Mood Board Analysis endpoint
+  const moodboardUpload = multer({
+    dest: 'uploads/moodboards/',
+    fileFilter: (req, file, cb) => {
+      if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+      } else {
+        cb(new Error('Only image files are allowed'));
+      }
+    },
+    limits: {
+      fileSize: 10 * 1024 * 1024 // 10MB limit
+    }
+  }).single('moodboard');
+
+  app.post("/api/analyze-moodboard", moodboardUpload, async (req: any, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No image uploaded" });
+      }
+
+      const analysis = await moodBoardAnalyzer.analyzeMoodBoard(req.file.path);
+      
+      res.json(analysis);
+    } catch (error) {
+      console.error("Mood board analysis error:", error);
+      res.status(500).json({ error: "Failed to analyze mood board" });
     }
   });
 

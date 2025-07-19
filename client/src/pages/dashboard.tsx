@@ -4,7 +4,7 @@ import { useBusinessData } from "@/hooks/use-business-data";
 import { 
   PoundSterling, Users, Target, FileText, ArrowUp, 
   Zap, TrendingUp, Clock, CheckCircle, Plus, UserPlus,
-  BarChart3, Package, Search, Bell, MessageCircle, Upload
+  BarChart3, Package, Search, Bell, MessageCircle, Upload, Palette
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,12 +19,14 @@ import Analytics from "@/components/analytics";
 import AIChat from "@/components/ai-chat";
 import ExcelUpload from "@/components/excel-upload";
 import Catalogue from "@/components/catalogue";
+import MoodBoardAnalyzer from "@/components/mood-board-analyzer";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [showQuoteBuilder, setShowQuoteBuilder] = useState(false);
   const [showAIChat, setShowAIChat] = useState(false);
   const [showExcelUpload, setShowExcelUpload] = useState(false);
+  const [showMoodBoardAnalyzer, setShowMoodBoardAnalyzer] = useState(false);
   const { products, contractors, quotes, orders, suppliers } = useBusinessData();
 
   // Calculate KPIs
@@ -60,6 +62,14 @@ export default function Dashboard() {
             >
               <Upload className="w-4 h-4" />
               Upload Excel
+            </Button>
+            <Button
+              onClick={() => setShowMoodBoardAnalyzer(true)}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <Palette className="w-4 h-4" />
+              Mood Board
             </Button>
             <Button variant="outline" size="icon">
               <Search className="w-5 h-5" />
@@ -377,6 +387,25 @@ export default function Dashboard() {
         return renderDashboard();
       case "catalogue":
         return <Catalogue />;
+      case "moodboard":
+        return (
+          <div className="p-8">
+            <div className="max-w-4xl mx-auto text-center space-y-6">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold">Mood Board Analysis</h1>
+                <p className="text-gray-600">Upload design inspiration images to find matching products from your catalogue</p>
+              </div>
+              <Button
+                onClick={() => setShowMoodBoardAnalyzer(true)}
+                size="lg"
+                className="flex items-center gap-2"
+              >
+                <Palette className="h-5 w-5" />
+                Start Analysis
+              </Button>
+            </div>
+          </div>
+        );
       case "products":
         return <ProductCatalog />;
       case "contractors":
@@ -407,6 +436,7 @@ export default function Dashboard() {
       )}
       <AIChat isOpen={showAIChat} onClose={() => setShowAIChat(false)} />
       <ExcelUpload isOpen={showExcelUpload} onClose={() => setShowExcelUpload(false)} />
+      <MoodBoardAnalyzer isOpen={showMoodBoardAnalyzer} onClose={() => setShowMoodBoardAnalyzer(false)} />
     </div>
   );
 }
