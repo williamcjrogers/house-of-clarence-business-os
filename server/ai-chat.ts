@@ -1,11 +1,11 @@
 import OpenAI from "openai";
-import { propertyDataService } from "./property-api";
+import { storage } from "./storage";
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export class AIChatService {
-  async processPropertyQuery(userMessage: string): Promise<string> {
+  async processBusinessQuery(userMessage: string): Promise<string> {
     try {
       // First, analyze the user's intent and extract search parameters
       const intentResponse = await openai.chat.completions.create({
@@ -13,20 +13,18 @@ export class AIChatService {
         messages: [
           {
             role: "system",
-            content: `You are a property data analysis assistant. Analyze the user's query and determine what type of property information they're looking for. 
+            content: `You are a business data analysis assistant for House of Clarence Business OS. Analyze the user's query and determine what type of business information they're looking for. 
 
             Respond with JSON in this format:
             {
-              "intent": "search_properties" | "property_details" | "market_analysis" | "general_info",
+              "intent": "products" | "contractors" | "quotes" | "orders" | "suppliers" | "analytics" | "general_info",
               "parameters": {
-                "location": "string or null",
+                "category": "string or null",
                 "priceRange": {"min": number, "max": number} or null,
-                "propertyType": "string or null",
-                "bedrooms": number or null,
-                "bathrooms": number or null,
-                "features": ["string"] or null,
-                "propertyId": "string or null",
-                "area": "string or null"
+                "supplier": "string or null",
+                "contractor": "string or null",
+                "dateRange": {"from": "string", "to": "string"} or null,
+                "status": "string or null"
               },
               "query": "reformulated search query"
             }`
@@ -41,25 +39,42 @@ export class AIChatService {
 
       const intent = JSON.parse(intentResponse.choices[0].message.content || "{}");
       
-      let propertyData;
+      let businessData: any = {};
       
-      // Fetch relevant property data based on intent
+      // Fetch relevant business data based on intent
       switch (intent.intent) {
-        case "search_properties":
-          propertyData = await propertyDataService.searchProperties(intent.query);
+        case "products":
+          businessData.products = await storage.getProducts();
           break;
-        case "property_details":
-          if (intent.parameters.propertyId) {
-            propertyData = await propertyDataService.getPropertyDetails(intent.parameters.propertyId);
-          } else {
-            propertyData = await propertyDataService.searchProperties(intent.query);
-          }
+        case "contractors":
+          businessData.contractors = await storage.getContractors();
           break;
-        case "market_analysis":
-          propertyData = await propertyDataService.getMarketAnalysis(intent.parameters.area || intent.parameters.location || "London");
+        case "quotes":
+          businessData.quotes = await storage.getQuotes();
+          break;
+        case "orders":
+          businessData.orders = await storage.getOrders();
+          break;
+        case "suppliers":
+          businessData.suppliers = await storage.getSuppliers();
+          break;
+        case "analytics":
+          businessData = {
+            products: await storage.getProducts(),
+            contractors: await storage.getContractors(),
+            quotes: await storage.getQuotes(),
+            orders: await storage.getOrders(),
+            suppliers: await storage.getSuppliers()
+          };
           break;
         default:
-          propertyData = await propertyDataService.searchProperties(intent.query);
+          businessData = {
+            products: await storage.getProducts(),
+            contractors: await storage.getContractors(),
+            quotes: await storage.getQuotes(),
+            orders: await storage.getOrders(),
+            suppliers: await storage.getSuppliers()
+          };
       }
 
       // Generate natural language response based on the data
@@ -68,22 +83,30 @@ export class AIChatService {
         messages: [
           {
             role: "system",
-            content: `You are a helpful property data assistant for House of Clarence Business OS. 
+            content: `You are a helpful business data assistant for House of Clarence Business OS. 
             
-            Provide clear, professional responses about property data. Format your responses with:
+            Provide clear, professional responses about business data including:
+            - Product catalog information (specs, pricing, suppliers, lead times)
+            - Contractor relationships and project details
+            - Quote generation and tracking
+            - Order management and fulfillment
+            - Supplier performance and relationships
+            - Business analytics and insights
+            
+            Format your responses with:
             - Key information in bullet points when appropriate
             - Price formatting with £ symbol and commas
-            - Clear property details and comparisons
+            - Clear summaries and actionable insights
             - Professional tone suitable for business use
             
-            If the data appears to be mock/sample data, still provide a helpful response but you can mention this is sample data for demonstration purposes.`
+            Focus on helping users understand their business performance, find products, analyze trends, and make informed decisions.`
           },
           {
             role: "user",
             content: `User asked: "${userMessage}"
             
-            Property data retrieved:
-            ${JSON.stringify(propertyData, null, 2)}
+            Business data retrieved:
+            ${JSON.stringify(businessData, null, 2)}
             
             Please provide a helpful response based on this data.`
           }

@@ -22,7 +22,7 @@ export default function AIChat({ isOpen, onClose }: AIChatProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "welcome",
-      text: "Hello! I'm your AI assistant for property data. You can ask me questions like:\n\n• 'Show me properties in Westminster under £1M'\n• 'What's the market analysis for Islington?'\n• 'Find 3-bedroom apartments with gardens'\n• 'What are the price trends in London?'\n\nWhat would you like to know?",
+      text: "Hello! I'm your AI assistant for House of Clarence Business OS. You can ask me questions like:\n\n• 'Show me all products from a specific supplier'\n• 'What's our profit margin on WC products?'\n• 'Which contractors have the highest project value?'\n• 'What are our best selling product categories?'\n• 'Find products with lead times under 2 weeks'\n\nWhat would you like to know about your business?",
       sender: "ai",
       timestamp: new Date()
     }

@@ -300,7 +300,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Message is required" });
       }
 
-      const response = await aiChatService.processPropertyQuery(message);
+      const response = await aiChatService.processBusinessQuery(message);
       res.json({ response });
     } catch (error) {
       console.error("AI Chat Error:", error);
