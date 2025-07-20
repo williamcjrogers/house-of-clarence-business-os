@@ -439,6 +439,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // PDF upload endpoint for construction finishes
+  app.post("/api/upload-pdf", uploadMiddleware, async (req: any, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No PDF file uploaded" });
+      }
+
+      const { importProductsFromPDF } = await import("./pdf-parser");
+      const results = await importProductsFromPDF(req.file.path);
+      
+      res.json({
+        message: "PDF file processed successfully",
+        results: {
+          imported: results.success,
+          errors: results.errors
+        }
+      });
+    } catch (error) {
+      console.error("PDF Upload Error:", error);
+      res.status(500).json({ error: "Failed to process PDF file" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

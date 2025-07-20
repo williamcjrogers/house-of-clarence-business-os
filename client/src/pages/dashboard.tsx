@@ -18,6 +18,7 @@ import SupplierManagement from "@/components/supplier-management";
 import Analytics from "@/components/analytics";
 import AIChat from "@/components/ai-chat";
 import ExcelUpload from "@/components/excel-upload";
+import PDFUpload from "@/components/pdf-upload";
 import Catalogue from "@/components/catalogue";
 import MoodBoardAnalyzer from "@/components/mood-board-analyzer";
 import VictorianReferenceManager from "@/components/victorian-reference-manager";
@@ -27,6 +28,7 @@ export default function Dashboard() {
   const [showQuoteBuilder, setShowQuoteBuilder] = useState(false);
   const [showAIChat, setShowAIChat] = useState(false);
   const [showExcelUpload, setShowExcelUpload] = useState(false);
+  const [showPDFUpload, setShowPDFUpload] = useState(false);
   const [showMoodBoardAnalyzer, setShowMoodBoardAnalyzer] = useState(false);
   const [showVictorianReferences, setShowVictorianReferences] = useState(false);
   const { products, contractors, quotes, orders, suppliers } = useBusinessData();
@@ -64,6 +66,14 @@ export default function Dashboard() {
             >
               <Upload className="w-4 h-4" />
               Upload Excel
+            </Button>
+            <Button
+              onClick={() => setShowPDFUpload(true)}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <FileText className="w-4 h-4" />
+              Upload PDF
             </Button>
             <Button
               onClick={() => setShowMoodBoardAnalyzer(true)}
@@ -446,6 +456,7 @@ export default function Dashboard() {
       )}
       <AIChat isOpen={showAIChat} onClose={() => setShowAIChat(false)} />
       <ExcelUpload isOpen={showExcelUpload} onClose={() => setShowExcelUpload(false)} />
+      <PDFUpload isOpen={showPDFUpload} onClose={() => setShowPDFUpload(false)} />
       <MoodBoardAnalyzer isOpen={showMoodBoardAnalyzer} onClose={() => setShowMoodBoardAnalyzer(false)} />
       <VictorianReferenceManager isOpen={showVictorianReferences} onClose={() => setShowVictorianReferences(false)} />
     </div>
