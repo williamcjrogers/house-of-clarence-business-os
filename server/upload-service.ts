@@ -331,14 +331,7 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
     
     console.log('Headers found:', headers);
     
-    // Debug: Check a few price data rows
-    console.log('Price data sample:');
-    for(let i = headerRowIndex + 1; i < Math.min(headerRowIndex + 10, jsonData.length); i++) {
-      const row = jsonData[i] as any[];
-      if(row && (row[5] !== undefined || row[6] !== undefined)) {
-        console.log(`Row ${i}: HOC[5]=${row[5]}, UK[6]=${row[6]}, type=${typeof row[5]}, ukType=${typeof row[6]}`);
-      }
-    }
+    console.log(`Successfully mapped price columns: HOC=${columnMap.hocPrice}, UK=${columnMap.ukPrice}`);
     
     // Process data rows
     let currentCategory = 'General';
@@ -376,8 +369,8 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
         category: getCellValue(row, columnMap.category) || currentCategory,
         subCategory: getCellValue(row, columnMap.subCategory) || '',
         specs: getCellValue(row, columnMap.specs) || '',
-        hocPrice: row[columnMap.hocPrice] || '0',
-        ukPrice: row[columnMap.ukPrice] || '0',
+        hocPrice: String(row[5] || '0'), // Direct column 5 access
+        ukPrice: String(row[6] || '0'),  // Direct column 6 access
         link: getCellValue(row, columnMap.link) || null,
         unit: 'unit', // Default unit
         leadTime: 7, // Default lead time
@@ -385,9 +378,6 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
         supplier: getCellValue(row, columnMap.supplier) || 'Unknown',
         imageUrl: imageUrl
       };
-      
-      // Debug: show what's actually in the row at price columns
-      console.log(`Row ${i} DEBUG: product ${product.productCode}, row[5]=${row[5]}, row[6]=${row[6]}, type5=${typeof row[5]}, type6=${typeof row[6]}`);
       
       // Clean up price values
       product.hocPrice = cleanPriceValue(product.hocPrice);

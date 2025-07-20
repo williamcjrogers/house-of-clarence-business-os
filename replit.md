@@ -67,7 +67,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Key Data Flows
 - **Product Management**: CRUD operations with real-time updates
-- **Excel Import**: ✅ FULLY OPERATIONAL - 116 products with embedded images successfully imported
+- **Excel Import**: ✅ FULLY OPERATIONAL - 141 products with embedded images AND PRICES successfully imported
 - **PDF Import**: Construction document parsing and automatic product extraction
 - **Quote Generation**: Multi-step process with product selection
 - **Order Processing**: Status tracking from creation to delivery
