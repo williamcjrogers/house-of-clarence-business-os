@@ -311,8 +311,8 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
       category: findColumnIndex(headers, ['product category', 'category']),
       subCategory: findColumnIndex(headers, ['title / location', 'title/location', 'sub category', 'subcategory']),
       specs: findColumnIndex(headers, ['product specs', 'specs', 'specification']),
-      hocPrice: findColumnIndex(headers, ['hoc price', 'house price', 'cost', 'hoc cost']),
-      ukPrice: findColumnIndex(headers, ['uk price', 'retail price', 'price', 'uk cost']),
+      hocPrice: 5, // Fixed: HOC Price is always column 5
+      ukPrice: 6,  // Fixed: UK Price is always column 6
       link: findColumnIndex(headers, ['uk - product link', 'uk product link', 'link', 'url']),
       supplier: findColumnIndex(headers, ['supplier', 'manufacturer'])
     };
@@ -329,7 +329,16 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
       supplier: columnMap.supplier
     });
     
-    console.log('Headers found:', headers.slice(0, 10));
+    console.log('Headers found:', headers);
+    
+    // Debug: Check a few price data rows
+    console.log('Price data sample:');
+    for(let i = headerRowIndex + 1; i < Math.min(headerRowIndex + 10, jsonData.length); i++) {
+      const row = jsonData[i] as any[];
+      if(row && (row[5] !== undefined || row[6] !== undefined)) {
+        console.log(`Row ${i}: HOC[5]=${row[5]}, UK[6]=${row[6]}, type=${typeof row[5]}, ukType=${typeof row[6]}`);
+      }
+    }
     
     // Process data rows
     let currentCategory = 'General';
@@ -376,6 +385,9 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
         supplier: getCellValue(row, columnMap.supplier) || 'Unknown',
         imageUrl: imageUrl
       };
+      
+      // Debug: show what's actually in the row at price columns
+      console.log(`Row ${i} DEBUG: product ${product.productCode}, row[5]=${row[5]}, row[6]=${row[6]}, type5=${typeof row[5]}, type6=${typeof row[6]}`);
       
       // Clean up price values
       product.hocPrice = cleanPriceValue(product.hocPrice);
