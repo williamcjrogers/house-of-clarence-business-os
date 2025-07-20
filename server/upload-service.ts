@@ -246,10 +246,23 @@ const getCellValue = (row: any[], columnIndex: number): string => {
 };
 
 // Helper function to clean price values
-const cleanPriceValue = (price: string): string => {
-  if (!price) return '0';
+const cleanPriceValue = (price: string | number): string => {
+  if (!price && price !== 0) return '0.00';
+  
+  // Handle numeric values
+  if (typeof price === 'number') {
+    return price.toFixed(2);
+  }
+  
+  // Handle string values
+  const strPrice = String(price).trim();
+  if (!strPrice) return '0.00';
+  
   // Remove currency symbols and normalize
-  return price.replace(/[£$€,]/g, '').trim() || '0';
+  const cleaned = strPrice.replace(/[£$€,]/g, '').trim();
+  const numValue = parseFloat(cleaned);
+  
+  return isNaN(numValue) ? '0.00' : numValue.toFixed(2);
 };
 
 // Helper function to get image for a specific row
@@ -298,11 +311,25 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
       category: findColumnIndex(headers, ['product category', 'category']),
       subCategory: findColumnIndex(headers, ['title / location', 'title/location', 'sub category', 'subcategory']),
       specs: findColumnIndex(headers, ['product specs', 'specs', 'specification']),
-      hocPrice: findColumnIndex(headers, ['hoc price', 'house price', 'cost']),
-      ukPrice: findColumnIndex(headers, ['uk price', 'retail price', 'price']),
+      hocPrice: findColumnIndex(headers, ['hoc price', 'house price', 'cost', 'hoc cost']),
+      ukPrice: findColumnIndex(headers, ['uk price', 'retail price', 'price', 'uk cost']),
       link: findColumnIndex(headers, ['uk - product link', 'uk product link', 'link', 'url']),
       supplier: findColumnIndex(headers, ['supplier', 'manufacturer'])
     };
+    
+    console.log('Column mapping found:', {
+      type: columnMap.type,
+      productCode: columnMap.productCode,
+      category: columnMap.category,
+      subCategory: columnMap.subCategory,
+      specs: columnMap.specs,
+      hocPrice: columnMap.hocPrice,
+      ukPrice: columnMap.ukPrice,
+      link: columnMap.link,
+      supplier: columnMap.supplier
+    });
+    
+    console.log('Headers found:', headers.slice(0, 10));
     
     // Process data rows
     let currentCategory = 'General';
@@ -340,8 +367,8 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
         category: getCellValue(row, columnMap.category) || currentCategory,
         subCategory: getCellValue(row, columnMap.subCategory) || '',
         specs: getCellValue(row, columnMap.specs) || '',
-        hocPrice: getCellValue(row, columnMap.hocPrice) || '0',
-        ukPrice: getCellValue(row, columnMap.ukPrice) || '0',
+        hocPrice: row[columnMap.hocPrice] || '0',
+        ukPrice: row[columnMap.ukPrice] || '0',
         link: getCellValue(row, columnMap.link) || null,
         unit: 'unit', // Default unit
         leadTime: 7, // Default lead time
