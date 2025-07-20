@@ -330,7 +330,7 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
         continue;
       }
       
-      const productCode = getCellValue(row, columnMap.productCode) || `AUTO-${Date.now()}-${i}`;
+      const productCode = getCellValue(row, columnMap.productCode) || `AUTO-${Date.now()}-${i}-${Math.random().toString(36).substr(2, 5)}`;
       const imageUrl = getImageForRow(rowImageMap, i);
       console.log(`Product ${productCode} (row ${i}) assigned image: ${imageUrl}`);
       
@@ -378,11 +378,27 @@ export const importProductsFromExcel = async (filePath: string): Promise<{ succe
   try {
     const products = await parseExcelFile(filePath);
     
+    // Clear existing products before importing new ones
+    await storage.clearAllProducts();
+    console.log('Cleared existing products before import');
+    
+    // Track used product codes to ensure uniqueness
+    const usedProductCodes = new Set<string>();
+    
     for (const productData of products) {
       try {
+        // Ensure unique product code
+        let uniqueProductCode = productData.productCode;
+        let counter = 1;
+        while (usedProductCodes.has(uniqueProductCode)) {
+          uniqueProductCode = `${productData.productCode}-${counter}`;
+          counter++;
+        }
+        usedProductCodes.add(uniqueProductCode);
+        
         await storage.createProduct({
           type: productData.type,
-          productCode: productData.productCode,
+          productCode: uniqueProductCode,
           category: productData.category,
           subCategory: productData.subCategory || null,
           specs: productData.specs,
@@ -398,6 +414,7 @@ export const importProductsFromExcel = async (filePath: string): Promise<{ succe
         
         results.success++;
       } catch (error) {
+        console.error(`Failed to import product ${productData.productCode}:`, error);
         results.errors.push(`Failed to import product ${productData.productCode}: ${error.message}`);
       }
     }
