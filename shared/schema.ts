@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const products = pgTable("products", {
   id: serial("id").primaryKey(),
-  productCode: varchar("product_code", { length: 10 }).notNull().unique(),
+  productCode: varchar("product_code", { length: 50 }).notNull().unique(),
   category: varchar("category", { length: 50 }).notNull(),
   subCategory: varchar("sub_category", { length: 100 }),
   type: varchar("type", { length: 100 }).notNull(),

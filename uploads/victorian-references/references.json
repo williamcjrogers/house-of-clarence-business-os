@@ -600,5 +600,349 @@
     "description": "Second Empire Victorian with distinctive mansard roof",
     "filePath": "",
     "analysisDate": "2025-07-20T02:35:35.315Z"
+  },
+  {
+    "id": "default-san-francisco-painted-lady",
+    "name": "San Francisco Painted Lady",
+    "style": "Queen Anne Victorian",
+    "keyFeatures": [
+      "Asymmetrical facade",
+      "Bay windows",
+      "Ornate trim",
+      "Steep-pitched roof"
+    ],
+    "colorPalette": [
+      "Sage Green",
+      "Cream",
+      "Burgundy",
+      "Gold"
+    ],
+    "materials": [
+      "Wood siding",
+      "Decorative shingles",
+      "Cast iron"
+    ],
+    "architecturalElements": [
+      "Wraparound porch",
+      "Decorative brackets",
+      "Spindle work"
+    ],
+    "description": "Classic San Francisco Painted Lady showcasing Queen Anne Victorian style",
+    "filePath": "",
+    "analysisDate": "2025-07-20T02:36:10.034Z"
+  },
+  {
+    "id": "default-gothic-revival-victorian",
+    "name": "Gothic Revival Victorian",
+    "style": "Gothic Revival",
+    "keyFeatures": [
+      "Pointed arch windows",
+      "Steep gables",
+      "Vertical emphasis"
+    ],
+    "colorPalette": [
+      "Dark Green",
+      "Cream",
+      "Brown"
+    ],
+    "materials": [
+      "Brick",
+      "Stone trim",
+      "Slate roof"
+    ],
+    "architecturalElements": [
+      "Buttresses",
+      "Gothic arches",
+      "Ornate stonework"
+    ],
+    "description": "Gothic Revival Victorian emphasizing medieval architectural elements",
+    "filePath": "",
+    "analysisDate": "2025-07-20T02:36:10.035Z"
+  },
+  {
+    "id": "default-second-empire-victorian",
+    "name": "Second Empire Victorian",
+    "style": "Second Empire",
+    "keyFeatures": [
+      "Mansard roof",
+      "Dormer windows",
+      "Classical details"
+    ],
+    "colorPalette": [
+      "Gray",
+      "White",
+      "Black"
+    ],
+    "materials": [
+      "Brick",
+      "Stone",
+      "Slate"
+    ],
+    "architecturalElements": [
+      "Mansard roof",
+      "Bracketed cornices",
+      "Quoins"
+    ],
+    "description": "Second Empire Victorian with distinctive mansard roof",
+    "filePath": "",
+    "analysisDate": "2025-07-20T02:36:10.045Z"
+  },
+  {
+    "id": "default-san-francisco-painted-lady",
+    "name": "San Francisco Painted Lady",
+    "style": "Queen Anne Victorian",
+    "keyFeatures": [
+      "Asymmetrical facade",
+      "Bay windows",
+      "Ornate trim",
+      "Steep-pitched roof"
+    ],
+    "colorPalette": [
+      "Sage Green",
+      "Cream",
+      "Burgundy",
+      "Gold"
+    ],
+    "materials": [
+      "Wood siding",
+      "Decorative shingles",
+      "Cast iron"
+    ],
+    "architecturalElements": [
+      "Wraparound porch",
+      "Decorative brackets",
+      "Spindle work"
+    ],
+    "description": "Classic San Francisco Painted Lady showcasing Queen Anne Victorian style",
+    "filePath": "",
+    "analysisDate": "2025-07-20T02:36:46.616Z"
+  },
+  {
+    "id": "default-gothic-revival-victorian",
+    "name": "Gothic Revival Victorian",
+    "style": "Gothic Revival",
+    "keyFeatures": [
+      "Pointed arch windows",
+      "Steep gables",
+      "Vertical emphasis"
+    ],
+    "colorPalette": [
+      "Dark Green",
+      "Cream",
+      "Brown"
+    ],
+    "materials": [
+      "Brick",
+      "Stone trim",
+      "Slate roof"
+    ],
+    "architecturalElements": [
+      "Buttresses",
+      "Gothic arches",
+      "Ornate stonework"
+    ],
+    "description": "Gothic Revival Victorian emphasizing medieval architectural elements",
+    "filePath": "",
+    "analysisDate": "2025-07-20T02:36:46.616Z"
+  },
+  {
+    "id": "default-second-empire-victorian",
+    "name": "Second Empire Victorian",
+    "style": "Second Empire",
+    "keyFeatures": [
+      "Mansard roof",
+      "Dormer windows",
+      "Classical details"
+    ],
+    "colorPalette": [
+      "Gray",
+      "White",
+      "Black"
+    ],
+    "materials": [
+      "Brick",
+      "Stone",
+      "Slate"
+    ],
+    "architecturalElements": [
+      "Mansard roof",
+      "Bracketed cornices",
+      "Quoins"
+    ],
+    "description": "Second Empire Victorian with distinctive mansard roof",
+    "filePath": "",
+    "analysisDate": "2025-07-20T02:36:46.632Z"
+  },
+  {
+    "id": "default-san-francisco-painted-lady",
+    "name": "San Francisco Painted Lady",
+    "style": "Queen Anne Victorian",
+    "keyFeatures": [
+      "Asymmetrical facade",
+      "Bay windows",
+      "Ornate trim",
+      "Steep-pitched roof"
+    ],
+    "colorPalette": [
+      "Sage Green",
+      "Cream",
+      "Burgundy",
+      "Gold"
+    ],
+    "materials": [
+      "Wood siding",
+      "Decorative shingles",
+      "Cast iron"
+    ],
+    "architecturalElements": [
+      "Wraparound porch",
+      "Decorative brackets",
+      "Spindle work"
+    ],
+    "description": "Classic San Francisco Painted Lady showcasing Queen Anne Victorian style",
+    "filePath": "",
+    "analysisDate": "2025-07-20T02:38:21.962Z"
+  },
+  {
+    "id": "default-gothic-revival-victorian",
+    "name": "Gothic Revival Victorian",
+    "style": "Gothic Revival",
+    "keyFeatures": [
+      "Pointed arch windows",
+      "Steep gables",
+      "Vertical emphasis"
+    ],
+    "colorPalette": [
+      "Dark Green",
+      "Cream",
+      "Brown"
+    ],
+    "materials": [
+      "Brick",
+      "Stone trim",
+      "Slate roof"
+    ],
+    "architecturalElements": [
+      "Buttresses",
+      "Gothic arches",
+      "Ornate stonework"
+    ],
+    "description": "Gothic Revival Victorian emphasizing medieval architectural elements",
+    "filePath": "",
+    "analysisDate": "2025-07-20T02:38:21.962Z"
+  },
+  {
+    "id": "default-second-empire-victorian",
+    "name": "Second Empire Victorian",
+    "style": "Second Empire",
+    "keyFeatures": [
+      "Mansard roof",
+      "Dormer windows",
+      "Classical details"
+    ],
+    "colorPalette": [
+      "Gray",
+      "White",
+      "Black"
+    ],
+    "materials": [
+      "Brick",
+      "Stone",
+      "Slate"
+    ],
+    "architecturalElements": [
+      "Mansard roof",
+      "Bracketed cornices",
+      "Quoins"
+    ],
+    "description": "Second Empire Victorian with distinctive mansard roof",
+    "filePath": "",
+    "analysisDate": "2025-07-20T02:38:21.974Z"
+  },
+  {
+    "id": "default-san-francisco-painted-lady",
+    "name": "San Francisco Painted Lady",
+    "style": "Queen Anne Victorian",
+    "keyFeatures": [
+      "Asymmetrical facade",
+      "Bay windows",
+      "Ornate trim",
+      "Steep-pitched roof"
+    ],
+    "colorPalette": [
+      "Sage Green",
+      "Cream",
+      "Burgundy",
+      "Gold"
+    ],
+    "materials": [
+      "Wood siding",
+      "Decorative shingles",
+      "Cast iron"
+    ],
+    "architecturalElements": [
+      "Wraparound porch",
+      "Decorative brackets",
+      "Spindle work"
+    ],
+    "description": "Classic San Francisco Painted Lady showcasing Queen Anne Victorian style",
+    "filePath": "",
+    "analysisDate": "2025-07-20T02:39:20.162Z"
+  },
+  {
+    "id": "default-gothic-revival-victorian",
+    "name": "Gothic Revival Victorian",
+    "style": "Gothic Revival",
+    "keyFeatures": [
+      "Pointed arch windows",
+      "Steep gables",
+      "Vertical emphasis"
+    ],
+    "colorPalette": [
+      "Dark Green",
+      "Cream",
+      "Brown"
+    ],
+    "materials": [
+      "Brick",
+      "Stone trim",
+      "Slate roof"
+    ],
+    "architecturalElements": [
+      "Buttresses",
+      "Gothic arches",
+      "Ornate stonework"
+    ],
+    "description": "Gothic Revival Victorian emphasizing medieval architectural elements",
+    "filePath": "",
+    "analysisDate": "2025-07-20T02:39:20.163Z"
+  },
+  {
+    "id": "default-second-empire-victorian",
+    "name": "Second Empire Victorian",
+    "style": "Second Empire",
+    "keyFeatures": [
+      "Mansard roof",
+      "Dormer windows",
+      "Classical details"
+    ],
+    "colorPalette": [
+      "Gray",
+      "White",
+      "Black"
+    ],
+    "materials": [
+      "Brick",
+      "Stone",
+      "Slate"
+    ],
+    "architecturalElements": [
+      "Mansard roof",
+      "Bracketed cornices",
+      "Quoins"
+    ],
+    "description": "Second Empire Victorian with distinctive mansard roof",
+    "filePath": "",
+    "analysisDate": "2025-07-20T02:39:20.171Z"
   }
 ]

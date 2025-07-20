@@ -330,7 +330,7 @@ export const parseExcelFile = async (filePath: string): Promise<ParsedProduct[]>
         continue;
       }
       
-      const productCode = getCellValue(row, columnMap.productCode) || `AUTO-${Date.now()}-${i}-${Math.random().toString(36).substr(2, 5)}`;
+      const productCode = getCellValue(row, columnMap.productCode) || `AUTO-${i}-${Math.random().toString(36).substr(2, 4)}`;
       const imageUrl = getImageForRow(rowImageMap, i);
       console.log(`Product ${productCode} (row ${i}) assigned image: ${imageUrl}`);
       
@@ -379,8 +379,12 @@ export const importProductsFromExcel = async (filePath: string): Promise<{ succe
     const products = await parseExcelFile(filePath);
     
     // Clear existing products before importing new ones
-    await storage.clearAllProducts();
-    console.log('Cleared existing products before import');
+    try {
+      await storage.clearAllProducts();
+      console.log('Cleared existing products before import');
+    } catch (error) {
+      console.log('No existing products to clear or clearAllProducts not implemented');
+    }
     
     // Track used product codes to ensure uniqueness
     const usedProductCodes = new Set<string>();

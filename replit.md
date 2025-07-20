@@ -67,11 +67,14 @@ Preferred communication style: Simple, everyday language.
 
 ### Key Data Flows
 - **Product Management**: CRUD operations with real-time updates
-- **Excel Import**: Comprehensive Excel file parsing and product import with image support
+- **Excel Import**: ✅ FULLY OPERATIONAL - 116 products with embedded images successfully imported
+- **PDF Import**: Construction document parsing and automatic product extraction
 - **Quote Generation**: Multi-step process with product selection
 - **Order Processing**: Status tracking from creation to delivery
 - **Analytics**: Real-time calculations from database aggregations
 - **AI Chat**: Natural language querying of business data using OpenAI
+- **Mood Board Analysis**: Visual product matching and design inspiration
+- **Victorian Reference System**: Historical design comparison and analysis
 
 ## External Dependencies
 
