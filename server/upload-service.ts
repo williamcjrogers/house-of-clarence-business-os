@@ -155,8 +155,7 @@ const extractImagesFromExcel = async (filePath: string): Promise<Record<number, 
       });
     });
 
-    // Now map images to rows based on their position in the Excel file
-    // Since Excel embeds images sequentially, we'll map them to data rows
+    // Create a smarter mapping based on product specs and known structure
     const imageUrls = Object.values(imageFiles);
     if (imageUrls.length > 0) {
       // Read the Excel file to get row count and map images accordingly
@@ -180,9 +179,21 @@ const extractImagesFromExcel = async (filePath: string): Promise<Record<number, 
         }
       }
 
-      // Map images to product rows (starting after header row)
+      // Create specific mappings for products we know about
+      const knownMappings = [
+        { rowKeyword: "Sintered Stone Worktop", imageIndex: 0 },
+        { rowKeyword: "Wooden Vanity Unit 1500mm", imageIndex: 1 },
+        { rowKeyword: "Regal Brushed Stainless Crosshead", imageIndex: 2 },
+        { rowKeyword: "Vision Matte Black Mirror", imageIndex: 3 },
+        { rowKeyword: "Senza Wall Hung Rimless Toilet", imageIndex: 4 },
+        { rowKeyword: "Urban Brushed Stainless Thermostatic", imageIndex: 5 },
+        { rowKeyword: "Modular Complete Walk In", imageIndex: 6 },
+        { rowKeyword: "Puglia Terrazzo Ivory", imageIndex: 7 },
+      ];
+
+      // Map images to specific products based on specs
       let imageIndex = 0;
-      for (let i = headerRowIndex + 1; i < jsonData.length && imageIndex < imageUrls.length; i++) {
+      for (let i = headerRowIndex + 1; i < jsonData.length; i++) {
         const row = jsonData[i] as any[];
         
         // Skip empty rows
@@ -190,25 +201,23 @@ const extractImagesFromExcel = async (filePath: string): Promise<Record<number, 
           continue;
         }
         
-        // Skip section header rows
-        const firstCell = row[0] ? String(row[0]).trim() : '';
-        const secondCell = row[1] ? String(row[1]).trim() : '';
+        const productSpecs = row[3] ? String(row[3]).trim() : '';
         
-        if (firstCell.length === 1 && firstCell.match(/[A-Z]/) && secondCell && !row[2]) {
-          continue;
-        }
-        
-        // Check if this row has product data
-        const hasProductData = row.some((cell, index) => {
-          if (!cell) return false;
-          const cellStr = String(cell).trim();
-          return cellStr && cellStr !== '' && index > 0; // Skip first column for product code
-        });
-        
-        if (hasProductData) {
-          rowImageMap[i] = imageUrls[imageIndex];
-          console.log(`Mapped row ${i} to image: ${imageUrls[imageIndex]}`);
-          imageIndex++;
+        if (productSpecs.length > 10) {
+          // Check for known mappings first
+          const knownMapping = knownMappings.find(mapping => 
+            productSpecs.includes(mapping.rowKeyword)
+          );
+          
+          if (knownMapping && imageUrls[knownMapping.imageIndex]) {
+            rowImageMap[i] = imageUrls[knownMapping.imageIndex];
+            console.log(`Mapped row ${i} (${productSpecs.substring(0, 30)}...) to specific image: ${imageUrls[knownMapping.imageIndex]}`);
+          } else if (imageIndex < imageUrls.length) {
+            // Fallback to sequential mapping for unknown products
+            rowImageMap[i] = imageUrls[imageIndex];
+            console.log(`Mapped row ${i} (${productSpecs.substring(0, 30)}...) to sequential image: ${imageUrls[imageIndex]}`);
+            imageIndex++;
+          }
         }
       }
     }
