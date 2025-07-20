@@ -7,6 +7,7 @@ import { insertProductSchema, insertContractorSchema, insertQuoteSchema, insertO
 import { aiChatService } from "./ai-chat";
 import { uploadMiddleware, importProductsFromExcel } from "./upload-service";
 import { moodBoardAnalyzer } from "./moodboard-analyzer";
+import { victorianReferenceService } from "./victorian-reference-service";
 import multer from "multer";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -337,6 +338,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Mood board analysis error:", error);
       res.status(500).json({ error: "Failed to analyze mood board" });
+    }
+  });
+
+  // Victorian Reference Management endpoints
+  const victorianUpload = multer({
+    dest: 'uploads/victorian-references/',
+    fileFilter: (req, file, cb) => {
+      if (file.mimetype.startsWith('image/')) {
+        cb(null, true);
+      } else {
+        cb(new Error('Only image files are allowed'));
+      }
+    },
+    limits: {
+      fileSize: 10 * 1024 * 1024 // 10MB limit
+    }
+  }).single('victorian-image');
+
+  app.post("/api/save-victorian-reference", victorianUpload, async (req: any, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No image uploaded" });
+      }
+
+      const imageBuffer = require('fs').readFileSync(req.file.path);
+      const reference = await victorianReferenceService.saveVictorianReference(
+        imageBuffer, 
+        req.file.originalname
+      );
+      
+      // Clean up uploaded file
+      require('fs').unlinkSync(req.file.path);
+      
+      res.json(reference);
+    } catch (error) {
+      console.error("Victorian reference save error:", error);
+      res.status(500).json({ error: "Failed to save Victorian reference" });
+    }
+  });
+
+  app.get("/api/victorian-references", async (req, res) => {
+    try {
+      const references = await victorianReferenceService.getAllReferences();
+      res.json(references);
+    } catch (error) {
+      console.error("Error fetching Victorian references:", error);
+      res.status(500).json({ error: "Failed to fetch Victorian references" });
+    }
+  });
+
+  app.get("/api/victorian-references/search", async (req, res) => {
+    try {
+      const { style, features, colors, materials } = req.query;
+      const searchCriteria = {
+        style: style as string,
+        features: features ? (features as string).split(',') : undefined,
+        colors: colors ? (colors as string).split(',') : undefined,
+        materials: materials ? (materials as string).split(',') : undefined,
+      };
+      
+      const matchingReferences = await victorianReferenceService.findMatchingReferences(searchCriteria);
+      res.json(matchingReferences);
+    } catch (error) {
+      console.error("Error searching Victorian references:", error);
+      res.status(500).json({ error: "Failed to search Victorian references" });
+    }
+  });
+
+  app.post("/api/victorian-references/:id/compare", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const comparison = await victorianReferenceService.compareWithCatalogue(id);
+      res.json(comparison);
+    } catch (error) {
+      console.error("Error comparing Victorian reference:", error);
+      res.status(500).json({ error: "Failed to compare with catalogue" });
     }
   });
 

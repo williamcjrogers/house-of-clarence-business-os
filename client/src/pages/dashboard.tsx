@@ -4,7 +4,7 @@ import { useBusinessData } from "@/hooks/use-business-data";
 import { 
   PoundSterling, Users, Target, FileText, ArrowUp, 
   Zap, TrendingUp, Clock, CheckCircle, Plus, UserPlus,
-  BarChart3, Package, Search, Bell, MessageCircle, Upload, Palette
+  BarChart3, Package, Search, Bell, MessageCircle, Upload, Palette, Home
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +20,7 @@ import AIChat from "@/components/ai-chat";
 import ExcelUpload from "@/components/excel-upload";
 import Catalogue from "@/components/catalogue";
 import MoodBoardAnalyzer from "@/components/mood-board-analyzer";
+import VictorianReferenceManager from "@/components/victorian-reference-manager";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -27,6 +28,7 @@ export default function Dashboard() {
   const [showAIChat, setShowAIChat] = useState(false);
   const [showExcelUpload, setShowExcelUpload] = useState(false);
   const [showMoodBoardAnalyzer, setShowMoodBoardAnalyzer] = useState(false);
+  const [showVictorianReferences, setShowVictorianReferences] = useState(false);
   const { products, contractors, quotes, orders, suppliers } = useBusinessData();
 
   // Calculate KPIs
@@ -70,6 +72,14 @@ export default function Dashboard() {
             >
               <Palette className="w-4 h-4" />
               Mood Board
+            </Button>
+            <Button
+              onClick={() => setShowVictorianReferences(true)}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <Home className="w-4 h-4" />
+              Victorian Refs
             </Button>
             <Button variant="outline" size="icon">
               <Search className="w-5 h-5" />
@@ -437,6 +447,7 @@ export default function Dashboard() {
       <AIChat isOpen={showAIChat} onClose={() => setShowAIChat(false)} />
       <ExcelUpload isOpen={showExcelUpload} onClose={() => setShowExcelUpload(false)} />
       <MoodBoardAnalyzer isOpen={showMoodBoardAnalyzer} onClose={() => setShowMoodBoardAnalyzer(false)} />
+      <VictorianReferenceManager isOpen={showVictorianReferences} onClose={() => setShowVictorianReferences(false)} />
     </div>
   );
 }
