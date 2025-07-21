@@ -18,7 +18,7 @@ export default function ProductCatalog() {
     return matchesSearch && matchesCategory;
   }) || [];
 
-  const categories = [...new Set(products.data?.map(p => p.category) || [])];
+  const categories = Array.from(new Set(products.data?.map(p => p.category) || []));
 
   return (
     <div className="space-y-6">

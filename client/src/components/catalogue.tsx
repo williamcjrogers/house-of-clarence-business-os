@@ -32,7 +32,7 @@ export default function Catalogue() {
     return matchesSearch && matchesCategory;
   });
 
-  const categories = [...new Set(products.map(p => p.category))];
+  const categories = Array.from(new Set(products.map(p => p.category)));
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -253,7 +253,7 @@ export default function Catalogue() {
                     variant="outline"
                     size="sm"
                     className="w-full"
-                    onClick={() => window.open(product.link, '_blank')}
+                    onClick={() => product.link && window.open(product.link, '_blank')}
                   >
                     <ExternalLink className="h-4 w-4 mr-2" />
                     View Product

@@ -36,10 +36,10 @@ export default function Dashboard() {
   // Calculate KPIs
   const totalRevenue = contractors.data?.reduce((sum, c) => sum + parseFloat(c.totalRevenue || "0"), 0) || 0;
   const activeProjects = contractors.data?.reduce((sum, c) => sum + (c.projectsActive || 0), 0) || 0;
-  const avgMargin = products.data?.reduce((sum, p) => {
+  const avgMargin = products.data && products.data.length > 0 ? products.data.reduce((sum, p) => {
     const margin = ((parseFloat(p.ukPrice) - parseFloat(p.hocPrice)) / parseFloat(p.ukPrice)) * 100;
     return sum + margin;
-  }, 0) / (products.data?.length || 1) || 0;
+  }, 0) / products.data.length : 0;
   const pendingQuotes = quotes.data?.filter(q => q.status === "sent").length || 0;
 
   const renderDashboard = () => (
