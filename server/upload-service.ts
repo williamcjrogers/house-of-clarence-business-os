@@ -155,71 +155,49 @@ const extractImagesFromExcel = async (filePath: string): Promise<Record<number, 
       });
     });
 
-    // Create a smarter mapping based on product specs and known structure
-    const imageUrls = Object.values(imageFiles);
+    // Map images to products based on Excel structure
+    const imageUrls = Object.keys(imageFiles)
+      .sort() // Sort by filename to maintain Excel order
+      .map(key => imageFiles[key]);
+    
     if (imageUrls.length > 0) {
-      // Read the Excel file to get row count and map images accordingly
+      console.log(`Processing ${imageUrls.length} images for mapping`);
+      
+      // Read the Excel file to understand product layout
       const data = fs.readFileSync(filePath);
       const workbook = XLSX.read(data, { type: 'buffer' });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
       
-      // Find header row
-      let headerRowIndex = -1;
+      // Find all rows with product specs (column D/index 3)
+      const productRows: number[] = [];
+      
       for (let i = 0; i < jsonData.length; i++) {
         const row = jsonData[i] as any[];
-        if (row.some(cell => 
-          typeof cell === 'string' && 
-          (cell.toLowerCase().includes('product') || 
-           cell.toLowerCase().includes('category') || 
-           cell.toLowerCase().includes('price'))
-        )) {
-          headerRowIndex = i;
-          break;
+        const specs = row[3]; // Column D - Product Specs
+        
+        // A product row has meaningful specs
+        if (specs && String(specs).trim().length > 10) {
+          productRows.push(i);
+          console.log(`Found product at row ${i}: ${String(specs).substring(0, 40)}...`);
         }
       }
-
-      // Create specific mappings for products we know about
-      const knownMappings = [
-        { rowKeyword: "Sintered Stone Worktop", imageIndex: 0 },
-        { rowKeyword: "Wooden Vanity Unit 1500mm", imageIndex: 1 },
-        { rowKeyword: "Regal Brushed Stainless Crosshead", imageIndex: 2 },
-        { rowKeyword: "Vision Matte Black Mirror", imageIndex: 3 },
-        { rowKeyword: "Senza Wall Hung Rimless Toilet", imageIndex: 4 },
-        { rowKeyword: "Urban Brushed Stainless Thermostatic", imageIndex: 5 },
-        { rowKeyword: "Modular Complete Walk In", imageIndex: 6 },
-        { rowKeyword: "Puglia Terrazzo Ivory", imageIndex: 7 },
-      ];
-
-      // Map images to specific products based on specs
-      let imageIndex = 0;
-      for (let i = headerRowIndex + 1; i < jsonData.length; i++) {
-        const row = jsonData[i] as any[];
+      
+      console.log(`Found ${productRows.length} product rows and ${imageUrls.length} images`);
+      
+      // Map images to product rows in order
+      const maxMappings = Math.min(productRows.length, imageUrls.length);
+      for (let i = 0; i < maxMappings; i++) {
+        const rowIndex = productRows[i];
+        const imageUrl = imageUrls[i];
+        rowImageMap[rowIndex] = imageUrl;
         
-        // Skip empty rows
-        if (!row || row.every(cell => !cell || cell === '')) {
-          continue;
-        }
-        
-        const productSpecs = row[3] ? String(row[3]).trim() : '';
-        
-        if (productSpecs.length > 10) {
-          // Check for known mappings first
-          const knownMapping = knownMappings.find(mapping => 
-            productSpecs.includes(mapping.rowKeyword)
-          );
-          
-          if (knownMapping && imageUrls[knownMapping.imageIndex]) {
-            rowImageMap[i] = imageUrls[knownMapping.imageIndex];
-            console.log(`Mapped row ${i} (${productSpecs.substring(0, 30)}...) to specific image: ${imageUrls[knownMapping.imageIndex]}`);
-          } else if (imageIndex < imageUrls.length) {
-            // Fallback to sequential mapping for unknown products
-            rowImageMap[i] = imageUrls[imageIndex];
-            console.log(`Mapped row ${i} (${productSpecs.substring(0, 30)}...) to sequential image: ${imageUrls[imageIndex]}`);
-            imageIndex++;
-          }
-        }
+        const row = jsonData[rowIndex] as any[];
+        const specs = String(row[3]).substring(0, 40);
+        console.log(`Mapped image ${i + 1} to row ${rowIndex}: ${specs}...`);
       }
+      
+      console.log(`Created ${Object.keys(rowImageMap).length} image mappings`);
     }
     
     return rowImageMap;
