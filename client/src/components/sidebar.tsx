@@ -23,8 +23,8 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   ];
 
   return (
-    <div className="w-64 bg-hoc-warm-white shadow-xl border-r border-hoc-stone flex flex-col">
-      {/* Logo/Brand */}
+    <div className="hidden lg:flex w-64 bg-hoc-warm-white shadow-xl border-r border-hoc-stone flex-col">
+      {/* Enhanced Logo/Brand */}
       <div className="p-6 border-b border-hoc-stone bg-gradient-hoc-subtle">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-gradient-hoc-primary rounded-xl flex items-center justify-center shadow-lg">

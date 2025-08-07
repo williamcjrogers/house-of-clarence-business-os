@@ -4,7 +4,7 @@ import { useBusinessData } from "@/hooks/use-business-data";
 import { 
   PoundSterling, Users, Target, FileText, ArrowUp, 
   Zap, TrendingUp, Clock, CheckCircle, Plus, UserPlus,
-  BarChart3, Package, Search, Bell, MessageCircle, Upload, Palette, Home, Globe
+  BarChart3, Package, Search, Bell, MessageCircle, Upload, Palette, Home, Globe, Menu
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +26,7 @@ import WebScraper from "@/components/web-scraper";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showQuoteBuilder, setShowQuoteBuilder] = useState(false);
   const [showAIChat, setShowAIChat] = useState(false);
   const [showExcelUpload, setShowExcelUpload] = useState(false);
@@ -45,15 +46,16 @@ export default function Dashboard() {
   const pendingQuotes = quotes.data?.filter(q => q.status === "sent").length || 0;
 
   const renderDashboard = () => (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="bg-hoc-warm-white shadow-xl border border-hoc-stone px-8 py-6 rounded-2xl bg-gradient-hoc-subtle">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-3xl font-bold text-hoc-dark-charcoal font-luxury text-shadow-luxury">Dashboard</h2>
-            <p className="text-sm text-hoc-bronze mt-1 font-medium">Welcome back, here's your luxury construction business overview</p>
+    <div className="container space-y-8">
+      {/* Enhanced Hero Header */}
+      <div className="georgian-card hover-lift smooth-transition px-8 py-8 shadow-xl relative overflow-hidden">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div className="flex-1">
+            <h1 className="georgian-heading text-4xl lg:text-5xl font-bold mb-2">House of Clarence</h1>
+            <h2 className="text-xl lg:text-2xl text-georgian-stone font-medium mb-1">Business Operating System</h2>
+            <p className="text-base text-hoc-bronze font-medium">Luxury construction management platform</p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:items-center gap-3 lg:gap-4">
             <Button
               onClick={() => setShowQuoteBuilder(true)}
               className="flex items-center gap-2"
@@ -111,9 +113,9 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
+      {/* Enhanced KPI Cards */}
+      <div className="grid-responsive-4 gap-6">
+        <div className="georgian-card hover-lift p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-blue-50 rounded-lg">
               <PoundSterling className="w-6 h-6 text-blue-600" />
@@ -127,7 +129,7 @@ export default function Dashboard() {
           <p className="text-sm text-neutral-600 mt-1">YTD Revenue</p>
         </div>
 
-        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
+        <div className="georgian-card hover-lift p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-green-50 rounded-lg">
               <Target className="w-6 h-6 text-green-600" />
@@ -138,7 +140,7 @@ export default function Dashboard() {
           <p className="text-sm text-neutral-600 mt-1">Active Projects</p>
         </div>
 
-        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
+        <div className="georgian-card hover-lift p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-purple-50 rounded-lg">
               <Users className="w-6 h-6 text-purple-600" />
@@ -149,7 +151,7 @@ export default function Dashboard() {
           <p className="text-sm text-neutral-600 mt-1">Contractors</p>
         </div>
 
-        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
+        <div className="georgian-card hover-lift p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-orange-50 rounded-lg">
               <FileText className="w-6 h-6 text-orange-600" />
@@ -161,10 +163,10 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Insights Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Enhanced Insights Grid */}
+      <div className="grid-responsive-3 gap-6">
         {/* Top Performing Products */}
-        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
+        <div className="georgian-card hover-lift p-6">
           <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
             Top Products
             <Zap className="w-5 h-5 text-yellow-500" />
@@ -192,7 +194,7 @@ export default function Dashboard() {
         </div>
 
         {/* Contractor Performance */}
-        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
+        <div className="georgian-card hover-lift p-6">
           <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
             Contractor Performance
             <TrendingUp className="w-5 h-5 text-green-500" />
@@ -221,7 +223,7 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
+        <div className="georgian-card hover-lift p-6">
           <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
             Recent Activity
             <Clock className="w-5 h-5 text-blue-500" />
@@ -261,10 +263,10 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Revenue Chart & Quote Management */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Enhanced Revenue Chart & Quote Management */}
+      <div className="grid-responsive gap-6">
         {/* Revenue Chart */}
-        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
+        <div className="georgian-card hover-lift p-6">
           <h3 className="text-lg font-semibold mb-4">Revenue Overview</h3>
           <div className="h-64 bg-neutral-50 rounded-lg flex items-center justify-center">
             <div className="text-center">
@@ -276,7 +278,7 @@ export default function Dashboard() {
         </div>
 
         {/* Active Quotes */}
-        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
+        <div className="georgian-card hover-lift p-6">
           <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
             Active Quotes
             <Button variant="link" className="text-primary hover:text-blue-600 text-sm font-medium">
@@ -465,11 +467,57 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen flex bg-gradient-hoc-subtle">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-gradient-hoc-subtle">
+      {/* Mobile Navigation Header */}
+      <div className="lg:hidden bg-hoc-warm-white shadow-xl border-b border-hoc-stone p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-gradient-hoc-primary rounded-lg flex items-center justify-center">
+              <span className="text-hoc-warm-white font-bold text-sm">HC</span>
+            </div>
+            <div>
+              <h1 className="font-bold text-lg text-hoc-dark-charcoal">House of Clarence</h1>
+            </div>
+          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            className="lg:hidden"
+          >
+            <Menu className="w-5 h-5" />
+          </Button>
+        </div>
+        
+        {/* Mobile Menu */}
+        {showMobileMenu && (
+          <div className="mt-4 border-t border-hoc-stone pt-4">
+            <div className="grid grid-cols-2 gap-2">
+              {["dashboard", "catalogue", "products", "contractors", "quotes", "analytics"].map(tab => (
+                <Button
+                  key={tab}
+                  variant={activeTab === tab ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => {
+                    setActiveTab(tab);
+                    setShowMobileMenu(false);
+                  }}
+                  className="justify-start capitalize"
+                >
+                  {tab}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       <div className="flex-1 flex flex-col">
-        <main className="flex-1 p-8">
-          {renderContent()}
+        <main className="flex-1 p-4 lg:p-8 max-w-full overflow-x-hidden">
+          <div className="max-w-7xl mx-auto">
+            {renderContent()}
+          </div>
         </main>
       </div>
       {showQuoteBuilder && (

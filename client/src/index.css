@@ -24,7 +24,7 @@
   --ring: hsl(210, 15%, 25%);
   --radius: 0.75rem;
   
-  /* House of Clarence Luxury Construction Palette */
+  /* House of Clarence Georgian Manor Palette */
   --hoc-cream: hsl(42, 25%, 95%);
   --hoc-warm-white: hsl(30, 15%, 98%);
   --hoc-stone: hsl(24, 12%, 85%);
@@ -33,6 +33,12 @@
   --hoc-gold: hsl(45, 70%, 70%);
   --hoc-bronze: hsl(33, 40%, 45%);
   --hoc-sage: hsl(110, 15%, 65%);
+  
+  /* Georgian Manor Enhancement */
+  --georgian-navy: hsl(210, 30%, 25%);
+  --georgian-stone: hsl(33, 25%, 55%);
+  --georgian-gold: hsl(45, 55%, 65%);
+  --georgian-cream: hsl(35, 25%, 96%);
   
   /* Neutral palette with warmer tones */
   --neutral-50: hsl(30, 15%, 98%);
@@ -72,12 +78,146 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
   }
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
     background: linear-gradient(135deg, var(--hoc-warm-white) 0%, var(--hoc-cream) 100%);
+    line-height: 1.6;
+    font-family: 'Georgia', 'Times New Roman', serif;
   }
+
+  /* Typography Hierarchy */
+  h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--hoc-dark-charcoal);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+    color: var(--hoc-dark-charcoal);
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    color: var(--hoc-charcoal);
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    max-width: 75ch; /* Optimal reading length */
+    color: var(--neutral-700);
+  }
+}
+
+/* Responsive Layout Utilities */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.grid-responsive {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 2rem;
+  }
+  
+  .grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-responsive-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .grid-responsive-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .grid-responsive-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Image Optimization */
+.img-responsive {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.img-aspect-16-9 {
+  aspect-ratio: 16/9;
+}
+
+.img-aspect-4-3 {
+  aspect-ratio: 4/3;
+}
+
+.img-aspect-square {
+  aspect-ratio: 1/1;
+}
+
+/* Performance Optimizations */
+.smooth-transition {
+  transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Georgian Manor Styling */
+.georgian-card {
+  background: var(--georgian-cream);
+  border: 1px solid var(--georgian-stone);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.georgian-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.georgian-heading {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  color: var(--georgian-navy);
+  font-weight: 600;
 }
 
 /* Custom utility classes */
