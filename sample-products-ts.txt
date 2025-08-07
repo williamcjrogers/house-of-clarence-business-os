@@ -1,6 +1,3 @@
-import type { Product, Contractor, Quote, Order, Supplier } from "@shared/schema";
-
-export const sampleProducts: Product[] = [
   { 
     id: 1,
     productCode: 'HOC-001',
@@ -727,7 +724,8 @@ export const sampleProducts: Product[] = [
     category: 'Shower Area',
     subCategory: 'Shower Thermostat',
     type: 'Shower Thermostat',
-    specs: '2-Way Thermostatic Shower With Riser Finish: Brushed Copper',
+    specs: '2-Way Thermostatic Shower With Riser
+Finish: Brushed Copper',
     hocPrice: '166.25',
     ukPrice: '332.50',
     link: 'https://www.nosa.co.uk/n%C3%B4sa-lagos-exposed-2-way-thermostatic-shower-with-riser-p120291#attribute%5B205%5D=9149',
@@ -757,81 +755,3 @@ export const sampleProducts: Product[] = [
     createdAt: new Date(),
     updatedAt: new Date()
   }
-];
-
-export const sampleContractors: Contractor[] = [
-  {
-    id: 1,
-    name: 'The Market Design & Build',
-    type: 'Design & Build',
-    contact: 'James Mitchell',
-    email: 'james@marketdb.co.uk',
-    phone: '020 7123 4567',
-    address: 'Chelsea, London',
-    projectsActive: 3,
-    projectsCompleted: 12,
-    totalRevenue: '342000.00',
-    avgProjectValue: '1850000.00',
-    paymentTerms: 'Net 30',
-    discountTier: 'Gold',
-    status: 'active',
-    notes: 'RIBA chartered, focuses on £250k-£3M projects',
-    creditLimit: '500000.00',
-    outstandingBalance: '48500.00',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 2,
-    name: 'Prime London Developments',
-    type: 'Developer',
-    contact: 'Sarah Chen',
-    email: 'sarah@primeld.com',
-    phone: '020 7891 2345',
-    address: 'Mayfair, London',
-    projectsActive: 2,
-    projectsCompleted: 8,
-    totalRevenue: '218000.00',
-    avgProjectValue: '2400000.00',
-    paymentTerms: 'Net 45',
-    discountTier: 'Silver',
-    status: 'active',
-    creditLimit: '750000.00',
-    outstandingBalance: '0.00',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-];
-
-export const sampleSuppliers: Supplier[] = [
-  { 
-    id: 1,
-    name: 'Lusso Stone', 
-    leadTime: 3, 
-    reliability: 95, 
-    paymentTerms: 'Net 60',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  { 
-    id: 2,
-    name: 'Häcker', 
-    leadTime: 6, 
-    reliability: 98, 
-    paymentTerms: 'Net 45',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  { 
-    id: 3,
-    name: 'Control4', 
-    leadTime: 4, 
-    reliability: 92, 
-    paymentTerms: 'Net 30',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-];
-
-export const sampleQuotes: Quote[] = [];
-export const sampleOrders: Order[] = [];
