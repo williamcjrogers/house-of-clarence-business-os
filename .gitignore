@@ -4,3 +4,21 @@ dist
 server/public
 vite.config.ts.*
 *.tar.gz
+
+# Large upload files - too big for GitHub
+uploads/*.xlsx
+uploads/*.pdf
+uploads/extracted-images/
+uploads/moodboards/
+uploads/victorian-references/
+.local/
+
+# Keep directory structure
+!uploads/.gitkeep
+!uploads/extracted-images/.gitkeep
+!uploads/moodboards/.gitkeep
+!uploads/victorian-references/.gitkeep
+
+# Environment files
+.env
+.env.local
