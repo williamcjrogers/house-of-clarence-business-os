@@ -22,3 +22,4 @@ uploads/victorian-references/
 # Environment files
 .env
 .env.local
+.vercel

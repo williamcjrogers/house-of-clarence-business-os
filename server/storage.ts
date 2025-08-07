@@ -349,6 +349,10 @@ export class MemStorage implements IStorage {
     return this.products.delete(id);
   }
 
+  async clearAllProducts(): Promise<void> {
+    this.products.clear();
+  }
+
   // Contractors
   async getContractors(): Promise<Contractor[]> {
     return Array.from(this.contractors.values());
@@ -653,4 +657,5 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-export const storage = new DatabaseStorage();
+// Use MemStorage if database is not available, otherwise use DatabaseStorage
+export const storage = db ? new DatabaseStorage() : new MemStorage();
