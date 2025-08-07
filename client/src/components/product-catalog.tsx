@@ -23,11 +23,11 @@ export default function ProductCatalog() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+      <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone bg-gradient-hoc-subtle">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-2xl font-bold text-neutral-800">Product Catalog</h2>
-            <p className="text-sm text-neutral-500 mt-1">Manage your product inventory and pricing</p>
+            <h2 className="text-3xl font-bold text-hoc-dark-charcoal font-luxury text-shadow-luxury">Product Catalog</h2>
+            <p className="text-sm text-hoc-bronze mt-1 font-medium">Manage your luxury construction product inventory and pricing</p>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="outline">

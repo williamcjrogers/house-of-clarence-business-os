@@ -42,6 +42,10 @@ app.use((req, res, next) => {
   // Initialize Victorian references with default examples
   const { victorianReferenceService } = await import("./victorian-reference-service");
   await victorianReferenceService.createDefaultReferences();
+  
+  // Preload data from existing files
+  const { preloadData } = await import("./preload-data");
+  await preloadData();
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;

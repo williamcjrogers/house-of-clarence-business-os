@@ -8,6 +8,7 @@ import { aiChatService } from "./ai-chat";
 import { uploadMiddleware, importProductsFromExcel } from "./upload-service";
 import { moodBoardAnalyzer } from "./moodboard-analyzer";
 import { victorianReferenceService } from "./victorian-reference-service";
+import { webScraper } from "./web-scraper";
 import multer from "multer";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -459,6 +460,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("PDF Upload Error:", error);
       res.status(500).json({ error: "Failed to process PDF file" });
+    }
+  });
+
+  // Web scraping endpoints
+  app.post("/api/scrape-competitor", async (req, res) => {
+    try {
+      const { siteUrl, profileName = 'generic', customConfig } = req.body;
+      
+      if (!siteUrl) {
+        return res.status(400).json({ error: "Site URL is required" });
+      }
+
+      console.log(`Starting scrape of ${siteUrl} with profile: ${profileName}`);
+      const results = await webScraper.scrapeCompetitorCatalog(siteUrl, profileName, customConfig);
+      
+      res.json({
+        message: "Competitor site scraped successfully",
+        results: {
+          imported: results.success,
+          errors: results.errors
+        }
+      });
+    } catch (error) {
+      console.error("Web scraping error:", error);
+      res.status(500).json({ error: "Failed to scrape competitor site" });
+    }
+  });
+
+  app.get("/api/scraper-profiles", async (req, res) => {
+    try {
+      const profiles = await webScraper.listAvailableProfiles();
+      res.json({ profiles });
+    } catch (error) {
+      console.error("Error listing scraper profiles:", error);
+      res.status(500).json({ error: "Failed to list scraper profiles" });
+    }
+  });
+
+  app.post("/api/scrape-product", async (req, res) => {
+    try {
+      const { productUrl } = req.body;
+      
+      if (!productUrl) {
+        return res.status(400).json({ error: "Product URL is required" });
+      }
+
+      const scrapedProduct = await webScraper.scrapeProductPage(productUrl);
+      
+      if (!scrapedProduct) {
+        return res.status(404).json({ error: "Could not scrape product from URL" });
+      }
+
+      res.json({
+        message: "Product scraped successfully",
+        product: scrapedProduct
+      });
+    } catch (error) {
+      console.error("Product scraping error:", error);
+      res.status(500).json({ error: "Failed to scrape product" });
     }
   });
 

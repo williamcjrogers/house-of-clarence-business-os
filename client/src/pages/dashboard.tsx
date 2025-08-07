@@ -4,7 +4,7 @@ import { useBusinessData } from "@/hooks/use-business-data";
 import { 
   PoundSterling, Users, Target, FileText, ArrowUp, 
   Zap, TrendingUp, Clock, CheckCircle, Plus, UserPlus,
-  BarChart3, Package, Search, Bell, MessageCircle, Upload, Palette, Home
+  BarChart3, Package, Search, Bell, MessageCircle, Upload, Palette, Home, Globe
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,6 +22,7 @@ import PDFUpload from "@/components/pdf-upload";
 import Catalogue from "@/components/catalogue";
 import MoodBoardAnalyzer from "@/components/mood-board-analyzer";
 import VictorianReferenceManager from "@/components/victorian-reference-manager";
+import WebScraper from "@/components/web-scraper";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -31,6 +32,7 @@ export default function Dashboard() {
   const [showPDFUpload, setShowPDFUpload] = useState(false);
   const [showMoodBoardAnalyzer, setShowMoodBoardAnalyzer] = useState(false);
   const [showVictorianReferences, setShowVictorianReferences] = useState(false);
+  const [showWebScraper, setShowWebScraper] = useState(false);
   const { products, contractors, quotes, orders, suppliers } = useBusinessData();
 
   // Calculate KPIs
@@ -45,11 +47,11 @@ export default function Dashboard() {
   const renderDashboard = () => (
     <div className="space-y-8">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-neutral-200 px-8 py-6 rounded-xl">
+      <div className="bg-hoc-warm-white shadow-xl border border-hoc-stone px-8 py-6 rounded-2xl bg-gradient-hoc-subtle">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-neutral-800">Dashboard</h2>
-            <p className="text-sm text-neutral-500 mt-1">Welcome back, here's your business overview</p>
+            <h2 className="text-3xl font-bold text-hoc-dark-charcoal font-luxury text-shadow-luxury">Dashboard</h2>
+            <p className="text-sm text-hoc-bronze mt-1 font-medium">Welcome back, here's your luxury construction business overview</p>
           </div>
           <div className="flex items-center gap-4">
             <Button
@@ -111,7 +113,7 @@ export default function Dashboard() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-blue-50 rounded-lg">
               <PoundSterling className="w-6 h-6 text-blue-600" />
@@ -125,7 +127,7 @@ export default function Dashboard() {
           <p className="text-sm text-neutral-600 mt-1">YTD Revenue</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-green-50 rounded-lg">
               <Target className="w-6 h-6 text-green-600" />
@@ -136,7 +138,7 @@ export default function Dashboard() {
           <p className="text-sm text-neutral-600 mt-1">Active Projects</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-purple-50 rounded-lg">
               <Users className="w-6 h-6 text-purple-600" />
@@ -147,7 +149,7 @@ export default function Dashboard() {
           <p className="text-sm text-neutral-600 mt-1">Contractors</p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
           <div className="flex items-center justify-between mb-4">
             <div className="p-3 bg-orange-50 rounded-lg">
               <FileText className="w-6 h-6 text-orange-600" />
@@ -162,7 +164,7 @@ export default function Dashboard() {
       {/* Insights Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Top Performing Products */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
           <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
             Top Products
             <Zap className="w-5 h-5 text-yellow-500" />
@@ -190,7 +192,7 @@ export default function Dashboard() {
         </div>
 
         {/* Contractor Performance */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
           <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
             Contractor Performance
             <TrendingUp className="w-5 h-5 text-green-500" />
@@ -219,7 +221,7 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
           <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
             Recent Activity
             <Clock className="w-5 h-5 text-blue-500" />
@@ -262,7 +264,7 @@ export default function Dashboard() {
       {/* Revenue Chart & Quote Management */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Revenue Chart */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
           <h3 className="text-lg font-semibold mb-4">Revenue Overview</h3>
           <div className="h-64 bg-neutral-50 rounded-lg flex items-center justify-center">
             <div className="text-center">
@@ -274,7 +276,7 @@ export default function Dashboard() {
         </div>
 
         {/* Active Quotes */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-neutral-200">
+        <div className="bg-hoc-warm-white rounded-2xl shadow-xl p-6 border border-hoc-stone">
           <h3 className="text-lg font-semibold mb-4 flex items-center justify-between">
             Active Quotes
             <Button variant="link" className="text-primary hover:text-blue-600 text-sm font-medium">
@@ -412,8 +414,8 @@ export default function Dashboard() {
           <div className="p-8">
             <div className="max-w-4xl mx-auto text-center space-y-6">
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold">Mood Board Analysis</h1>
-                <p className="text-gray-600">Upload design inspiration images to find matching products from your catalogue</p>
+                <h1 className="text-3xl font-bold text-hoc-dark-charcoal font-luxury">Mood Board Analysis</h1>
+                <p className="text-hoc-bronze">Upload design inspiration images to find matching products from your catalogue</p>
               </div>
               <Button
                 onClick={() => setShowMoodBoardAnalyzer(true)}
@@ -422,6 +424,25 @@ export default function Dashboard() {
               >
                 <Palette className="h-5 w-5" />
                 Start Analysis
+              </Button>
+            </div>
+          </div>
+        );
+      case "webscraper":
+        return (
+          <div className="max-w-6xl mx-auto space-y-8 py-12">
+            <div className="max-w-4xl mx-auto text-center space-y-6">
+              <div className="space-y-2">
+                <h1 className="text-3xl font-bold text-hoc-dark-charcoal font-luxury">Competitor Catalog Scraper</h1>
+                <p className="text-hoc-bronze">Import product catalogs from competitor websites automatically</p>
+              </div>
+              <Button
+                onClick={() => setShowWebScraper(true)}
+                size="lg"
+                className="flex items-center gap-2"
+              >
+                <Globe className="h-5 w-5" />
+                Start Scraping
               </Button>
             </div>
           </div>
@@ -444,7 +465,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen flex bg-neutral-50">
+    <div className="min-h-screen flex bg-gradient-hoc-subtle">
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
       <div className="flex-1 flex flex-col">
         <main className="flex-1 p-8">
@@ -459,6 +480,7 @@ export default function Dashboard() {
       <PDFUpload isOpen={showPDFUpload} onClose={() => setShowPDFUpload(false)} />
       <MoodBoardAnalyzer isOpen={showMoodBoardAnalyzer} onClose={() => setShowMoodBoardAnalyzer(false)} />
       <VictorianReferenceManager isOpen={showVictorianReferences} onClose={() => setShowVictorianReferences(false)} />
+      <WebScraper isOpen={showWebScraper} onClose={() => setShowWebScraper(false)} />
     </div>
   );
 }

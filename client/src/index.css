@@ -4,37 +4,47 @@
 
 :root {
   --background: hsl(0, 0%, 100%);
-  --foreground: hsl(222, 84%, 4.9%);
-  --muted: hsl(210, 40%, 96%);
-  --muted-foreground: hsl(215, 16%, 46.9%);
+  --foreground: hsl(210, 9%, 15%);
+  --muted: hsl(24, 15%, 95%);
+  --muted-foreground: hsl(210, 9%, 45%);
   --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(222, 84%, 4.9%);
+  --popover-foreground: hsl(210, 9%, 15%);
   --card: hsl(0, 0%, 100%);
-  --card-foreground: hsl(222, 84%, 4.9%);
-  --border: hsl(214, 32%, 91%);
-  --input: hsl(214, 32%, 91%);
-  --primary: hsl(220, 90%, 54%);
-  --primary-foreground: hsl(210, 40%, 98%);
-  --secondary: hsl(210, 40%, 96%);
-  --secondary-foreground: hsl(222, 84%, 4.9%);
-  --accent: hsl(210, 40%, 96%);
-  --accent-foreground: hsl(222, 84%, 4.9%);
+  --card-foreground: hsl(210, 9%, 15%);
+  --border: hsl(24, 15%, 90%);
+  --input: hsl(24, 15%, 90%);
+  --primary: hsl(210, 15%, 25%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(24, 15%, 95%);
+  --secondary-foreground: hsl(210, 9%, 15%);
+  --accent: hsl(33, 65%, 85%);
+  --accent-foreground: hsl(210, 9%, 15%);
   --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(210, 40%, 98%);
-  --ring: hsl(222, 84%, 4.9%);
-  --radius: 0.5rem;
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(210, 15%, 25%);
+  --radius: 0.75rem;
   
-  /* Custom colors for business theme */
-  --neutral-50: hsl(0, 0%, 98%);
-  --neutral-100: hsl(0, 0%, 95%);
-  --neutral-200: hsl(0, 0%, 90%);
-  --neutral-300: hsl(0, 0%, 83%);
-  --neutral-400: hsl(0, 0%, 64%);
-  --neutral-500: hsl(0, 0%, 45%);
-  --neutral-600: hsl(0, 0%, 32%);
-  --neutral-700: hsl(0, 0%, 26%);
-  --neutral-800: hsl(0, 0%, 15%);
-  --neutral-900: hsl(0, 0%, 9%);
+  /* House of Clarence Luxury Construction Palette */
+  --hoc-cream: hsl(42, 25%, 95%);
+  --hoc-warm-white: hsl(30, 15%, 98%);
+  --hoc-stone: hsl(24, 12%, 85%);
+  --hoc-charcoal: hsl(210, 15%, 25%);
+  --hoc-dark-charcoal: hsl(210, 20%, 15%);
+  --hoc-gold: hsl(45, 70%, 70%);
+  --hoc-bronze: hsl(33, 40%, 45%);
+  --hoc-sage: hsl(110, 15%, 65%);
+  
+  /* Neutral palette with warmer tones */
+  --neutral-50: hsl(30, 15%, 98%);
+  --neutral-100: hsl(24, 15%, 95%);
+  --neutral-200: hsl(24, 12%, 90%);
+  --neutral-300: hsl(24, 10%, 80%);
+  --neutral-400: hsl(24, 8%, 60%);
+  --neutral-500: hsl(210, 9%, 45%);
+  --neutral-600: hsl(210, 12%, 35%);
+  --neutral-700: hsl(210, 15%, 25%);
+  --neutral-800: hsl(210, 18%, 18%);
+  --neutral-900: hsl(210, 20%, 12%);
 }
 
 .dark {
@@ -66,6 +76,7 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    background: linear-gradient(135deg, var(--hoc-warm-white) 0%, var(--hoc-cream) 100%);
   }
 }
 
@@ -102,3 +113,50 @@
 .border-neutral-700 { border-color: var(--neutral-700); }
 .border-neutral-800 { border-color: var(--neutral-800); }
 .border-neutral-900 { border-color: var(--neutral-900); }
+
+/* House of Clarence Brand Colors */
+.bg-hoc-cream { background-color: var(--hoc-cream); }
+.bg-hoc-warm-white { background-color: var(--hoc-warm-white); }
+.bg-hoc-stone { background-color: var(--hoc-stone); }
+.bg-hoc-charcoal { background-color: var(--hoc-charcoal); }
+.bg-hoc-dark-charcoal { background-color: var(--hoc-dark-charcoal); }
+.bg-hoc-gold { background-color: var(--hoc-gold); }
+.bg-hoc-bronze { background-color: var(--hoc-bronze); }
+.bg-hoc-sage { background-color: var(--hoc-sage); }
+
+.text-hoc-cream { color: var(--hoc-cream); }
+.text-hoc-warm-white { color: var(--hoc-warm-white); }
+.text-hoc-stone { color: var(--hoc-stone); }
+.text-hoc-charcoal { color: var(--hoc-charcoal); }
+.text-hoc-dark-charcoal { color: var(--hoc-dark-charcoal); }
+.text-hoc-gold { color: var(--hoc-gold); }
+.text-hoc-bronze { color: var(--hoc-bronze); }
+.text-hoc-sage { color: var(--hoc-sage); }
+
+.border-hoc-cream { border-color: var(--hoc-cream); }
+.border-hoc-stone { border-color: var(--hoc-stone); }
+.border-hoc-charcoal { border-color: var(--hoc-charcoal); }
+.border-hoc-gold { border-color: var(--hoc-gold); }
+
+/* Luxury Construction Gradients */
+.bg-gradient-hoc-primary {
+  background: linear-gradient(135deg, var(--hoc-charcoal) 0%, var(--hoc-dark-charcoal) 100%);
+}
+
+.bg-gradient-hoc-accent {
+  background: linear-gradient(135deg, var(--hoc-gold) 0%, var(--hoc-bronze) 100%);
+}
+
+.bg-gradient-hoc-subtle {
+  background: linear-gradient(135deg, var(--hoc-warm-white) 0%, var(--hoc-cream) 100%);
+}
+
+/* Typography Enhancements */
+.font-luxury {
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.025em;
+}
+
+.text-shadow-luxury {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
