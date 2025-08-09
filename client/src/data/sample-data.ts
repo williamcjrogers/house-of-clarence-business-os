@@ -753,7 +753,7 @@ export const sampleProducts: Product[] = [
     leadTime: 9,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: '/images/products/image42.png',
+    imageUrl: '/images/products/image41.png',
     createdAt: new Date(),
     updatedAt: new Date()
   }

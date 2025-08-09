@@ -47,6 +47,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Bulk products endpoint for marketing website sync
+  app.post("/api/products/bulk", async (req, res) => {
+    try {
+      const { products } = req.body;
+      
+      if (!products || !Array.isArray(products)) {
+        return res.status(400).json({ message: "Products array is required" });
+      }
+
+      const results = [];
+      const errors = [];
+
+      for (const productData of products) {
+        try {
+          const validatedData = insertProductSchema.parse(productData);
+          const product = await storage.createProduct(validatedData);
+          results.push(product);
+        } catch (error) {
+          errors.push({
+            product: productData,
+            error: error instanceof Error ? error.message : 'Unknown error'
+          });
+        }
+      }
+
+      res.status(201).json({
+        success: true,
+        created: results.length,
+        errors: errors.length,
+        products: results,
+        failed: errors
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to create products in bulk" });
+    }
+  });
+
   app.patch("/api/products/:id", async (req, res) => {
     try {
       const product = await storage.updateProduct(parseInt(req.params.id), req.body);

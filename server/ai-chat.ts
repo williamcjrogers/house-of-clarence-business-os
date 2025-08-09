@@ -2,11 +2,16 @@ import OpenAI from "openai";
 import { storage } from "./storage";
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'sk-placeholder_key' 
+  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  : null;
 
 export class AIChatService {
   async processBusinessQuery(userMessage: string): Promise<string> {
     try {
+      if (!openai) {
+        return "AI chat is currently unavailable. Please configure OPENAI_API_KEY to enable AI assistance.";
+      }
       // First, analyze the user's intent and extract search parameters
       const intentResponse = await openai.chat.completions.create({
         model: "gpt-4o",
