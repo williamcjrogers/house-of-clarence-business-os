@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test - House of Clarence</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .image-test { margin: 20px 0; }
+        img { max-width: 300px; height: 200px; object-fit: cover; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Image Test Page</h1>
+    
+    <div class="image-test">
+        <h3>Product Image 1</h3>
+        <img src="/images/products/image1.png" alt="Image 1" onerror="this.innerHTML='BROKEN IMAGE 1'">
+    </div>
+    
+    <div class="image-test">
+        <h3>Product Image 2</h3>
+        <img src="/images/products/image2.png" alt="Image 2" onerror="this.innerHTML='BROKEN IMAGE 2'">
+    </div>
+    
+    <div class="image-test">
+        <h3>Product Image 3</h3>
+        <img src="/images/products/image3.png" alt="Image 3" onerror="this.innerHTML='BROKEN IMAGE 3'">
+    </div>
+
+    <p>If images show above, paths are working correctly. If you see "BROKEN IMAGE", there's a path issue.</p>
+    
+    <script>
+        // Test if images load
+        const images = document.querySelectorAll('img');
+        images.forEach((img, index) => {
+            img.onload = () => console.log(`Image ${index + 1} loaded successfully`);
+            img.onerror = () => console.log(`Image ${index + 1} failed to load`);
+        });
+    </script>
+</body>
+</html>

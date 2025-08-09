@@ -37,6 +37,20 @@ interface MoodBoardAnalysis {
 export class MoodBoardAnalyzer {
   async analyzeMoodBoard(imagePath: string): Promise<MoodBoardAnalysis> {
     try {
+      if (!openai) {
+        // Return basic analysis without AI when OpenAI is not available
+        return {
+          visualElements: {
+            colors: [{ color: "Unknown", hex: "#000000", percentage: 100 }],
+            style: "Unable to analyze - OpenAI not configured",
+            materials: ["Unknown"],
+            lighting: "Unknown"
+          },
+          matchingProducts: [],
+          designInsights: ["AI analysis unavailable. Please configure OPENAI_API_KEY."],
+          suggestions: ["Manual product matching recommended."]
+        };
+      }
       // Get all products from the database
       const products = await storage.getProducts();
       
