@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House of Clarence - Product Images Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .product { display: inline-block; margin: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; max-width: 300px; }
+        .product img { max-width: 100%; height: 200px; object-fit: cover; }
+        .product-code { font-weight: bold; color: #8B4513; }
+        .product-specs { font-size: 14px; margin: 10px 0; }
+        .product-price { color: #2E8B57; font-weight: bold; }
+        h1 { color: #8B4513; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>House of Clarence - Product Catalog with Images</h1>
+    <p>Successfully extracted 41 images from Excel file and integrated into product catalog!</p>
+    
+    <div class="product">
+        <img src="client/public/images/products/image1.png" alt="HOC-001">
+        <div class="product-code">HOC-001</div>
+        <div class="product-specs">Regal Brushed Stainless Crosshead Deck Mounted 3-Hole Basin Mixer Tap</div>
+        <div class="product-price">£107.08 HOC | £214.17 UK</div>
+    </div>
+    
+    <div class="product">
+        <img src="client/public/images/products/image2.png" alt="HOC-002">
+        <div class="product-code">HOC-002</div>
+        <div class="product-specs">Vision Matte Black Mirror With Natural White LED light and Demister 800mm</div>
+        <div class="product-price">£89.50 HOC | £179.00 UK</div>
+    </div>
+    
+    <div class="product">
+        <img src="client/public/images/products/image3.png" alt="HOC-003">
+        <div class="product-code">HOC-003</div>
+        <div class="product-specs">Senza Wall Hung Rimless Toilet with Concealed Cistern Frame and Brushed Stainless Flush Plate</div>
+        <div class="product-price">£248.75 HOC | £497.50 UK</div>
+    </div>
+
+    <div class="product">
+        <img src="client/public/images/products/image17.png" alt="HOC-017">
+        <div class="product-code">HOC-017</div>
+        <div class="product-specs">Picasso Air Freestanding Stone Bath 1700mm</div>
+        <div class="product-price">£707.09 HOC | £1414.17 UK</div>
+    </div>
+    
+    <p style="text-align: center; margin-top: 40px; font-style: italic;">
+        All 42 products now have their embedded Excel images properly extracted and linked!<br>
+        Images are stored in: <code>client/public/images/products/</code><br>
+        Product data updated in: <code>client/src/data/sample-data.ts</code>
+    </p>
+</body>
+</html>

@@ -15,7 +15,7 @@ export const sampleProducts: Product[] = [
     leadTime: 2,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image1.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -33,7 +33,7 @@ export const sampleProducts: Product[] = [
     leadTime: 9,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image2.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -51,7 +51,7 @@ export const sampleProducts: Product[] = [
     leadTime: 6,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image3.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -69,7 +69,7 @@ export const sampleProducts: Product[] = [
     leadTime: 5,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image4.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -87,7 +87,7 @@ export const sampleProducts: Product[] = [
     leadTime: 8,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image5.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -105,7 +105,7 @@ export const sampleProducts: Product[] = [
     leadTime: 4,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image6.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -123,7 +123,7 @@ export const sampleProducts: Product[] = [
     leadTime: 3,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image7.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -141,7 +141,7 @@ export const sampleProducts: Product[] = [
     leadTime: 5,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image8.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -159,7 +159,7 @@ export const sampleProducts: Product[] = [
     leadTime: 3,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image9.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -177,7 +177,7 @@ export const sampleProducts: Product[] = [
     leadTime: 7,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image10.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -195,7 +195,7 @@ export const sampleProducts: Product[] = [
     leadTime: 7,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image11.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -213,7 +213,7 @@ export const sampleProducts: Product[] = [
     leadTime: 5,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image12.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -231,7 +231,7 @@ export const sampleProducts: Product[] = [
     leadTime: 6,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image13.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -249,7 +249,7 @@ export const sampleProducts: Product[] = [
     leadTime: 2,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image14.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -267,7 +267,7 @@ export const sampleProducts: Product[] = [
     leadTime: 8,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image15.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -285,7 +285,7 @@ export const sampleProducts: Product[] = [
     leadTime: 3,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image16.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -303,7 +303,7 @@ export const sampleProducts: Product[] = [
     leadTime: 6,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image17.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -321,7 +321,7 @@ export const sampleProducts: Product[] = [
     leadTime: 2,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image18.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -339,7 +339,7 @@ export const sampleProducts: Product[] = [
     leadTime: 2,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image19.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -357,7 +357,7 @@ export const sampleProducts: Product[] = [
     leadTime: 7,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image20.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -375,7 +375,7 @@ export const sampleProducts: Product[] = [
     leadTime: 4,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image21.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -393,7 +393,7 @@ export const sampleProducts: Product[] = [
     leadTime: 4,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image22.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -411,7 +411,7 @@ export const sampleProducts: Product[] = [
     leadTime: 8,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image23.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -429,7 +429,7 @@ export const sampleProducts: Product[] = [
     leadTime: 9,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image24.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -447,7 +447,7 @@ export const sampleProducts: Product[] = [
     leadTime: 6,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image25.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -465,7 +465,7 @@ export const sampleProducts: Product[] = [
     leadTime: 9,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image26.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -483,7 +483,7 @@ export const sampleProducts: Product[] = [
     leadTime: 9,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image27.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -501,7 +501,7 @@ export const sampleProducts: Product[] = [
     leadTime: 5,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image28.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -519,7 +519,7 @@ export const sampleProducts: Product[] = [
     leadTime: 6,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image29.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -537,7 +537,7 @@ export const sampleProducts: Product[] = [
     leadTime: 5,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image30.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -555,7 +555,7 @@ export const sampleProducts: Product[] = [
     leadTime: 4,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image31.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -573,7 +573,7 @@ export const sampleProducts: Product[] = [
     leadTime: 7,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image32.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -591,7 +591,7 @@ export const sampleProducts: Product[] = [
     leadTime: 7,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image33.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -609,7 +609,7 @@ export const sampleProducts: Product[] = [
     leadTime: 4,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image34.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -627,7 +627,7 @@ export const sampleProducts: Product[] = [
     leadTime: 5,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image35.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -645,7 +645,7 @@ export const sampleProducts: Product[] = [
     leadTime: 2,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image36.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -663,7 +663,7 @@ export const sampleProducts: Product[] = [
     leadTime: 6,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image37.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -681,7 +681,7 @@ export const sampleProducts: Product[] = [
     leadTime: 4,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image38.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -699,7 +699,7 @@ export const sampleProducts: Product[] = [
     leadTime: 5,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image39.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -717,7 +717,7 @@ export const sampleProducts: Product[] = [
     leadTime: 7,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image40.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -735,7 +735,7 @@ export const sampleProducts: Product[] = [
     leadTime: 6,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image41.png',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -753,7 +753,7 @@ export const sampleProducts: Product[] = [
     leadTime: 9,
     moq: 1,
     supplier: 'House of Clarence',
-    imageUrl: null,
+    imageUrl: '/images/products/image42.png',
     createdAt: new Date(),
     updatedAt: new Date()
   }
