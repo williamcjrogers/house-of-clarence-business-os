@@ -23,6 +23,7 @@ import Catalogue from "@/components/catalogue";
 import MoodBoardAnalyzer from "@/components/mood-board-analyzer";
 import VictorianReferenceManager from "@/components/victorian-reference-manager";
 import WebScraper from "@/components/web-scraper";
+import StrategyAnalysis from "@/components/strategy-analysis";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -461,6 +462,8 @@ export default function Dashboard() {
         return <SupplierManagement />;
       case "analytics":
         return <Analytics />;
+      case "strategy":
+        return <StrategyAnalysis />;
       default:
         return renderDashboard();
     }
@@ -493,7 +496,7 @@ export default function Dashboard() {
         {showMobileMenu && (
           <div className="mt-4 border-t border-hoc-stone pt-4">
             <div className="grid grid-cols-2 gap-2">
-              {["dashboard", "catalogue", "products", "contractors", "quotes", "analytics"].map(tab => (
+              {["dashboard", "catalogue", "products", "contractors", "quotes", "analytics", "strategy"].map(tab => (
                 <Button
                   key={tab}
                   variant={activeTab === tab ? "default" : "outline"}

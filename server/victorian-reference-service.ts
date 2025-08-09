@@ -65,6 +65,17 @@ export class VictorianReferenceService {
   }
 
   private async analyzeVictorianHouse(base64Image: string) {
+    if (!openai) {
+      // Return basic placeholder analysis when OpenAI is not available
+      return {
+        style: "Victorian (analysis unavailable)",
+        keyFeatures: ["Analysis unavailable - OpenAI not configured"],
+        colorPalette: ["Unknown"],
+        materials: ["Unknown"],
+        architecturalElements: ["Analysis unavailable"]
+      };
+    }
+    
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [

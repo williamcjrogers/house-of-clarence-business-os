@@ -1,6 +1,6 @@
 import { 
   BarChart3, Package, Users, FileText, ShoppingCart, 
-  Truck, TrendingUp, BookOpen, Palette, Globe
+  Truck, TrendingUp, BookOpen, Palette, Globe, Target
 } from "lucide-react";
 
 interface SidebarProps {
@@ -20,6 +20,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
     { id: "orders", label: "Orders", icon: ShoppingCart },
     { id: "suppliers", label: "Suppliers", icon: Truck },
     { id: "analytics", label: "Analytics", icon: TrendingUp },
+    { id: "strategy", label: "Strategy", icon: Target },
   ];
 
   return (
